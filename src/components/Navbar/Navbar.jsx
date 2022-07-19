@@ -5,7 +5,9 @@ import './Navbar.scss';
 const Navbar = () => {
   return (
     <div className="navbar">
-      <Link to="/">Logo</Link>
+      <Link to="/" className="logo">
+        Logo
+      </Link>
       <ul className="menu">
         <Link to="/add-post">Add Post</Link>
         <Link to="/register">Register</Link>

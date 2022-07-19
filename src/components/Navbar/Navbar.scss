@@ -1,23 +1,24 @@
 .navbar {
     display: flex;
     justify-content: space-between;
-    margin-top: 15px;
+    margin-top: 25px;
+    margin-bottom: 70px;
+
+    .logo {
+        font-weight: 700;
+    }
 
     a {
         text-decoration: none;
-        color: black;
-        padding: 0 10px;
+        color: #fff;
 
-
+        &:last-child {
+            margin-left: 20px;
+        }
     }
 }
 
 .menu {
     display: flex;
-
-    :last-child {
-        margin-right: 50px;
-    }
-
 
 }

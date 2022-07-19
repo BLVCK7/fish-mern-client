@@ -1,4 +1,5 @@
 import { Routes, Route } from 'react-router-dom';
+import './App.scss';
 import Navbar from './components/Navbar/Navbar';
 import AddPost from './pages/AddPost/AddPost';
 import Home from './pages/Home/Home';
@@ -6,7 +7,7 @@ import Register from './pages/Register/Register';
 
 function App() {
   return (
-    <div className="App">
+    <div className="container">
       <Navbar />
       <Routes>
         <Route path="/" element={<Home />} />
