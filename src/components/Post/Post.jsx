@@ -5,9 +5,9 @@ import photo1 from '../../assets/img/DSC09989.JPG';
 import { BsSunFill } from 'react-icons/bs';
 import { WiStrongWind, WiBarometer } from 'react-icons/wi';
 import { GiCirclingFish } from 'react-icons/gi';
+import { Link } from 'react-router-dom';
 
-const Post = ({ data }) => {
-  console.log(data.description.length);
+const Post = ({ data, id }) => {
   return (
     <div className="card">
       <div className="first-block">
@@ -20,7 +20,9 @@ const Post = ({ data }) => {
       </div>
       <div className="second-block">
         <div className="card--info">
-          <h1>{data.name}</h1>
+          <Link to={`/post/${id}`}>
+            <h1>{data.name}</h1>
+          </Link>
           <div className="card--info-post">
             <span className="author">{data.user}</span>
             <span>{data.data}</span>

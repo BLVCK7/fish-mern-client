@@ -5,6 +5,7 @@ import './Home.scss';
 const Home = () => {
   const data = [
     {
+      id: 1,
       name: 'Рыбалка в Сабурово',
       user: 'BLVCK7',
       data: '2 марта 2022',
@@ -17,6 +18,7 @@ const Home = () => {
         'Поклевки с 16 до 18, на Tioga 3 зеленый цвет. С ближней бровки. Воблера по ночи молчали. В 23 ушел домой. Поклевки с 16 до 18, на Tioga 3 зеленый цвет. С ближней бровки. Воблера по ночи молчали. В 23 ушел домой. Поклевки с 16 до 18, на Tioga 3 зеленый цвет. С ближней бровки. Воблера поплыли!',
     },
     {
+      id: 2,
       name: 'Офигенно съездили!',
       user: 'Romka09',
       data: '23 июня 2022',
@@ -30,12 +32,14 @@ const Home = () => {
     },
   ];
 
-  // console.log(data[0].description.length);
+  const _id = Math.floor(Math.random() * 1000);
+
+  console.log(_id);
 
   return (
     <div className="home">
       {data.map((post) => (
-        <Post data={post} />
+        <Post data={post} id={_id} key={post.id} />
       ))}
     </div>
   );
