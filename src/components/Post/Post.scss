@@ -1,202 +1,74 @@
 a {
-    text-decoration: none;
     color: #fff;
+    text-decoration: none;
 
-    :hover {
+    &:hover {
         text-decoration: underline;
     }
 }
 
 .card {
     display: flex;
-
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 30px;
     width: 100%;
-    height: 300px;
-    background-color: #fff;
-    border-radius: 10px;
+    height: 100%;
 
-    margin-bottom: 50px;
+    &:last-child {
+        margin-bottom: 40px;
+    }
+    
 
-
-    .first-block {
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        color: black;
-
-        width: 40%
+    @media screen and (max-width: 1024px) {
+        padding: 20px 0 10px 0;
+        flex-direction: column;
+        height: 100%;
     }
 
-    .second-block {
+    &--box {
         display: flex;
         flex-direction: column;
-        align-items: flex-start;
+        justify-content: center;
+        align-items: stretch;
+        max-width: 560px;
+        max-height: 110px;
+        margin-left: 25px;
+        z-index: 1;
 
-        padding: 30px 25px 30px 25px;
-        color: black;
-
-        width: 60%
-    }
-
-        &--photo {
-            padding-left: 25px;
-            img {
-                width: 314px;
-                height: 209px;
-            }
-
-            &-arrows {
-
-            }
-
-            &-likes {
-                
-            }
-
-            &-points {
-                
-            }
-        }
-
-        &--info {
-            width: 100%;
-
-            padding: 3px 15px 8px 15px;
-
-            color: #fff;
-
+        &-header {
+            display: flex;
+            flex-direction: column;
             background-color: #002A5B;
             border-radius: 10px;
-
-            h1 {
-                font-weight: 700;
-                font-style: 24px;
-                font-style: normal;
-            }
-
-            &-post {
-                padding-left: 1px;
-                padding-top: 3px;
-
-                .author {
-                    font-size: 15px;
-                    font-style: normal;
-                    font-weight: 500;
-                }
-
-                span {
-                    font-weight: 300;
-                    font-size: 12px;
-                    font-style: italic;
-                    line-height: 18px;
-
-                    margin-right: 7px;
-                }
-            }
-
-            &-weather {
-                display: flex;
-
-                padding-top: 5px;
-
-                .weather-blog {
-                    display: flex;
-                    justify-content: center;
-                    align-items: center;
-
-                    margin-right: 10px;
-                    
-                    .barometr {
-                        font-size: 25px;
-                    }
-    
-                    .wind {
-                        font-size: 25px;
-                    }
-    
-                    .sun {
-                        font-size: 20px;
-                        padding-top: 2px;
-                    }
-                }
-
-                span {
-                    font-weight: 500;
-                    font-size: 15px;
-                    font-style: normal;
-                    line-height: 18px;
-
-                    margin-right: 5px;
-                }
-            }
-
+            color: #fff;
+            padding: 5px 10px;
         }
 
-        &--fish {
+        &-account {
             display: flex;
-
-            padding: 0 15px;
-
-            width: 100%;
-            padding: 15px 10px;
-
-            .icon-fish {
-                font-size: 22px;
-                padding-bottom: 2px;
-                color: #002A5B;
-                margin-right: 10px;
-            }
-
-            span {
-                display: flex;
-                align-items: flex-start;
-                justify-content: flex-start;
-
-                width: 100%;
-                color: #002A5B;
-
-                font-weight: 500;
-                font-size: 15px;
-                line-height: 20px;
-                font-style: normal;
-            }
         }
 
-        &--description {
+        &-weather {
             display: flex;
-            justify-content: center;
+            justify-content: flex-start;
             align-items: center;
+        }
 
-            padding: 0 15px;
-            
-            width: 100%;
-            height: 88px;
+        &-fish {
+            display: flex;
+            justify-content: flex-start;
+            align-items: center;
+        }
 
-            color: #fff;
-
+        &-description {
+            display: flex;
+            flex-direction: column;
             background-color: #002A5B;
             border-radius: 10px;
-
-            overflow: auto;
-
-            &::-webkit-scrollbar {
-                height: 0;
-                width: 0;
-            }
-
-            &-scroll {
-                padding: 75px 0 10px 0;
-                
-            }
-
-            &-hidden {
-                overflow: hidden;
-            }
-
-            p {
-                font-weight: 500;
-                font-style: 16px;
-                font-style: normal;
-            }
+            color: #fff;
+            padding: 10px;
         }
+    }
 }

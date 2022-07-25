@@ -2,69 +2,87 @@ import React from 'react';
 import './Post.scss';
 import photo1 from '../../assets/img/DSC09989.JPG';
 
-import { BsSunFill } from 'react-icons/bs';
-import { WiStrongWind, WiBarometer } from 'react-icons/wi';
-import { GiCirclingFish } from 'react-icons/gi';
 import { Link } from 'react-router-dom';
+import { Box, Card, IconButton, Stack, styled, Typography } from '@mui/material';
+import WbSunnyOutlinedIcon from '@mui/icons-material/WbSunnyOutlined';
+import AirOutlinedIcon from '@mui/icons-material/AirOutlined';
+import CompressOutlinedIcon from '@mui/icons-material/CompressOutlined';
+import PhishingOutlinedIcon from '@mui/icons-material/PhishingOutlined';
 
 const Post = ({ data, id }) => {
+  const NamedTypography = styled('Typography')({
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
+    padding: '5px 7px 0 7px',
+  });
+
+  const Img = styled('img')({
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
+    width: '50%',
+    height: '50%',
+  });
+
   return (
-    <div className="card">
-      <div className="first-block">
-        <div className="card--photo">
-          <img src={photo1} alt="Otchet1" />
-          <div className="card--photo-arrows"></div>
-          <div className="card--photo-likes"></div>
-          <div className="card--photo-points"></div>
-        </div>
-      </div>
-      <div className="second-block">
-        <div className="card--info">
+    <Card className="card">
+      <Img src={photo1} alt="Otchet1" />
+      <Stack
+        direction="column"
+        justifyContent="center"
+        alignItems="stretch"
+        spacing={1}
+        sx={{ padding: '30px' }}>
+        <Box className="card--box-header">
           <Link to={`/post/${id}`}>
-            <h1>{data.name}</h1>
+            <Typography variant="h4" sx={{ padding: '7px 5px 0 7px' }}>
+              {data.name}
+            </Typography>
           </Link>
-          <div className="card--info-post">
-            <span className="author">{data.user}</span>
-            <span>{data.data}</span>
-            <span>{data.location}</span>
-          </div>
-          <div className="card--info-weather">
-            <div className="weather-blog">
-              <span className="sun">
-                <BsSunFill />
-              </span>
-              <span>{data.temperature}</span>
-            </div>
-            <div className="weather-blog">
-              <span className="wind">
-                <WiStrongWind />
-              </span>
-              <span>{data.wind}</span>
-            </div>
-            <div className="weather-blog">
-              <span className="barometr">
-                <WiBarometer />
-              </span>
-              <span>{data.pressure}</span>
-            </div>
-          </div>
-        </div>
-        <div className="card--fish">
-          <GiCirclingFish className="icon-fish" />
-          <span>{data.fish}</span>
-        </div>
-        <div className="card--description">
-          <p
-            className={
-              data.description.length > 210
-                ? 'card--description-scroll'
-                : 'card--description-hidden'
-            }>
-            {data.description}
-          </p>
-        </div>
-      </div>
-    </div>
+          <Box className="card--box-account">
+            <NamedTypography variants="h6">{data.user}</NamedTypography>
+            <NamedTypography variants="h6">{data.data}</NamedTypography>
+            <NamedTypography variants="h6">{data.location}</NamedTypography>
+          </Box>
+          <Box className="card--box-weather">
+            <IconButton aria-label="WbSunnyOutlinedIcon" color="inherit">
+              <WbSunnyOutlinedIcon />
+            </IconButton>
+            <Typography variants="h6">{data.temperature}</Typography>
+            <IconButton aria-label="AirOutlinedIcon" color="inherit">
+              <AirOutlinedIcon />
+            </IconButton>
+            <Typography variants="h6">{data.wind}</Typography>
+            <IconButton aria-label="CompressOutlinedIcon" color="inherit">
+              <CompressOutlinedIcon />
+            </IconButton>
+            <Typography variants="h6">{data.pressure}</Typography>
+          </Box>
+        </Box>
+        <Box className="card--box-fish">
+          <IconButton aria-label="PhishingOutlinedIcon" color="inherit">
+            <PhishingOutlinedIcon />
+          </IconButton>
+          <Typography variants="h6" sx={{ paddingRight: '5px' }}>
+            {data.fish}
+          </Typography>
+        </Box>
+        <Box className="card--box-description">
+          {data.description.length > 150 ? (
+            <Link to={`/post/${id}`}>
+              <Typography
+                variants="h6"
+                sx={{ ':hover': { textDecoration: 'underline', cursor: 'pointer' } }}>
+                Читать далее...
+              </Typography>
+            </Link>
+          ) : (
+            <Typography variants="h6">{data.description}</Typography>
+          )}
+        </Box>
+      </Stack>
+    </Card>
   );
 };
 
