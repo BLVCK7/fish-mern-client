@@ -1,6 +1,5 @@
 import { Container } from '@mui/material';
 import { Routes, Route } from 'react-router-dom';
-import './App.scss';
 import Navbar from './components/Navbar/Navbar';
 import AddPost from './pages/AddPost/AddPost';
 import FullPost from './pages/FullPost/FullPost';
