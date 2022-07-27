@@ -1,13 +1,13 @@
 import React from 'react';
-import photo1 from '../../assets/img/DSC09989.JPG';
 
 import { Link } from 'react-router-dom';
-import { Box, Card, CardMedia, IconButton, Stack, styled, Typography } from '@mui/material';
+import { Box, Card, IconButton, Stack, styled, Typography } from '@mui/material';
 
 import WbSunnyOutlinedIcon from '@mui/icons-material/WbSunnyOutlined';
 import AirOutlinedIcon from '@mui/icons-material/AirOutlined';
 import CompressOutlinedIcon from '@mui/icons-material/CompressOutlined';
 import PhishingOutlinedIcon from '@mui/icons-material/PhishingOutlined';
+import Slider from '../Slider/Slider';
 
 const Post = ({ data, id }) => {
   const BlueBox = styled(Box)({
@@ -27,22 +27,14 @@ const Post = ({ data, id }) => {
 
   return (
     <Card>
-      {/* Картинка поста */}
       <Stack
         direction={{ mobile: 'column', laptop: 'row' }}
         justifyContent="space-between"
-        alignItems={{ mobile: 'center', laptop: 'flex-start' }}
+        alignItems={{ mobile: 'center', laptop: 'center' }}
         spacing={3}
         p={3}>
-        <CardMedia
-          component="img"
-          alt="first_otchet"
-          image={photo1}
-          sx={{
-            width: { mobile: '100%', laptop: '50%' },
-            height: { mobile: '100%', laptop: '50%' },
-          }}
-        />
+        {/* Фотки поста */}
+        <Slider data={data} />
 
         {/* Название поста */}
         <Stack
