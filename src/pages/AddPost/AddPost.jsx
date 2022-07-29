@@ -19,22 +19,44 @@ import {
 import TimePicker from '../../components/DatePicker/DatePicker';
 import AddOutlinedIcon from '@mui/icons-material/AddOutlined';
 
-const AddPost = () => {
-  const [text, setText] = React.useState('');
-  const [values, setValues] = React.useState({
-    amount: '',
-    password: '',
-    weight: '',
-    weightRange: '',
-    showPassword: false,
-  });
-  const [selected, setSelected] = React.useState(false);
+import { useDispatch, useSelector } from 'react-redux';
+import { setPost, setFish } from '../../redux/slices/PostSlice';
 
-  const handleChange = (prop) => (event) => {
-    setValues({ ...values, [prop]: event.target.value });
+const AddPost = () => {
+  const { fish, fishingDate } = useSelector((state) => state.postReducer);
+  const dispatch = useDispatch();
+
+  const [textMDE, setTextMDE] = React.useState('');
+
+  const [name, setPostName] = React.useState('');
+  const [location, setLocation] = React.useState('');
+  const [temperature, setTemperature] = React.useState(20);
+  const [windDirection, setWindDirection] = React.useState('Северный');
+  const [windPower, setWindPower] = React.useState('Штиль');
+  const [pressure, setPressure] = React.useState(745);
+  const [fishName, setFishName] = React.useState('Судак');
+  const [fishWeight, setFishWeight] = React.useState(100);
+
+  const onAddFish = () => {
+    dispatch(setFish({ fishName, fishWeight }));
   };
 
-  const options = React.useMemo(
+  const fields = {
+    name,
+    location,
+    temperature,
+    windDirection,
+    windPower,
+    pressure,
+    fish,
+    fishingDate,
+  };
+
+  const onSumbitPost = () => {
+    dispatch(setPost(fields));
+  };
+
+  const optionsMDE = React.useMemo(
     () => ({
       spellChecker: false,
       maxHeight: '250px',
@@ -49,8 +71,8 @@ const AddPost = () => {
     [],
   );
 
-  const onChange = React.useCallback((value) => {
-    setText(value);
+  const onChangeMDE = React.useCallback((value) => {
+    setTextMDE(value);
   }, []);
 
   const marks = [
@@ -90,6 +112,7 @@ const AddPost = () => {
           Название поста
         </Typography>
         <TextField
+          onChange={(e) => setPostName(e.target.value)}
           label="Название поста"
           color="primary"
           // focused
@@ -104,6 +127,7 @@ const AddPost = () => {
           Локация
         </Typography>
         <TextField
+          onChange={(e) => setLocation(e.target.value)}
           label="Локация"
           color="primary"
           // focused
@@ -115,6 +139,7 @@ const AddPost = () => {
         </Typography>
         <Box width={300}>
           <Slider
+            onChange={(e) => setTemperature(e.target.value)}
             marks={temperatureMarks}
             sx={{ ml: '10px' }}
             defaultValue={20}
@@ -130,22 +155,32 @@ const AddPost = () => {
         <Stack direction="row">
           <FormControl sx={{ m: 1, width: '180px' }}>
             <InputLabel htmlFor="grouped-native-select">Направление ветра</InputLabel>
-            <Select native defaultValue="" id="grouped-native-select" label="wind">
-              <option value={1}>Северный</option>
-              <option value={2}>Восточный</option>
-              <option value={3}>Южный</option>
-              <option value={4}>Западный</option>
+            <Select
+              native
+              defaultValue=""
+              id="grouped-native-select"
+              label="wind"
+              onChange={(e) => setWindDirection(e.target.value)}>
+              <option value={'Северный'}>Северный</option>
+              <option value={'Восточный'}>Восточный</option>
+              <option value={'Южный'}>Южный</option>
+              <option value={'Западный'}>Западный</option>
             </Select>
           </FormControl>
           <FormControl sx={{ m: 1, width: '180px' }}>
             <InputLabel htmlFor="grouped-native-select">Сила ветра</InputLabel>
-            <Select native defaultValue="" id="grouped-native-select" label="wind">
-              <option value={1}>Штиль</option>
-              <option value={2}>1 м/c</option>
-              <option value={3}>2 м/c</option>
-              <option value={4}>3 м/c</option>
-              <option value={5}>4 м/c</option>
-              <option value={6}>5+ м/c</option>
+            <Select
+              native
+              defaultValue=""
+              id="grouped-native-select"
+              label="wind"
+              onChange={(e) => setWindPower(e.target.value)}>
+              <option value={'Штиль'}>Штиль</option>
+              <option value={'1 м/c'}>1 м/c</option>
+              <option value={'2 м/c'}>2 м/c</option>
+              <option value={'3 м/c'}>3 м/c</option>
+              <option value={'4 м/c'}>4 м/c</option>
+              <option value={'5+ м/c'}>5+ м/c</option>
             </Select>
           </FormControl>
         </Stack>
@@ -155,6 +190,7 @@ const AddPost = () => {
         </Typography>
         <Box width={300}>
           <Slider
+            onChange={(e) => setPressure(e.target.value)}
             marks={marks}
             sx={{ ml: '10px' }}
             defaultValue={745}
@@ -169,12 +205,17 @@ const AddPost = () => {
         </Typography>
         <FormControl sx={{ m: 1, width: '200px' }}>
           <InputLabel htmlFor="grouped-native-select">Вид рыбы</InputLabel>
-          <Select native defaultValue="" id="grouped-native-select" label="fishName">
-            <option value={1}>Судак</option>
-            <option value={2}>Щука</option>
-            <option value={3}>Окунь</option>
-            <option value={4}>Голавль</option>
-            <option value={5}>Жерех</option>
+          <Select
+            native
+            defaultValue=""
+            id="grouped-native-select"
+            label="fishName"
+            onChange={(e) => setFishName(e.target.value)}>
+            <option value={'Судак'}>Судак</option>
+            <option value={'Щука'}>Щука</option>
+            <option value={'Окунь'}>Окунь</option>
+            <option value={'Голавль'}>Голавль</option>
+            <option value={'Жерех'}>Жерех</option>
           </Select>
         </FormControl>
         <Stack direction="row" justifyContent="flex-start" alignItems="center">
@@ -184,30 +225,30 @@ const AddPost = () => {
           <FormControl sx={{ m: 1, width: '25ch' }} variant="outlined">
             <OutlinedInput
               id="outlined-adornment-weight"
-              value={values.weight}
-              onChange={handleChange('weight')}
+              onChange={(e) => setFishWeight(e.target.value)}
+              value={fishWeight}
               endAdornment={<InputAdornment position="end">гр</InputAdornment>}
               aria-describedby="outlined-weight-helper-text"
+              autoComplete="off"
               inputProps={{
                 'aria-label': 'weight',
               }}
             />
           </FormControl>
-          <ToggleButton
-            value="check"
-            selected={selected}
-            onChange={() => {
-              setSelected(!selected);
-            }}>
+          <ToggleButton value="check" onClick={onAddFish}>
             <AddOutlinedIcon />
           </ToggleButton>
         </Stack>
 
-        {/* <SimpleMDE className="editor" value={text} onChange={onChange} options={options} /> */}
+        {/* <SimpleMDE className="editor" value={textMDE} onChange={onChangeMDE} options={optionsMDE} /> */}
       </Stack>
-
+      {fish.map((obj, index) => (
+        <p key={index}>
+          {obj.fishName} на {obj.fishWeight} гр.
+        </p>
+      ))}
       <Stack direction="row" justifyContent="center" alignItems="center">
-        <Button variant="contained" color="primary">
+        <Button variant="contained" color="primary" onClick={onSumbitPost}>
           Опубликовать пост
         </Button>
       </Stack>
