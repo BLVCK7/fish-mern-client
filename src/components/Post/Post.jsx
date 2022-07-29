@@ -25,6 +25,8 @@ const Post = ({ data, id }) => {
     margin: '10px 15px 0 0',
   });
 
+  console.log(data);
+
   return (
     <Card>
       <Stack
@@ -74,9 +76,9 @@ const Post = ({ data, id }) => {
                 alignItems={{ mobile: 'center', laptop: 'flex-start' }}
                 spacing={0}>
                 <PostTypo variants="h6" sx={{ fontWeight: '500' }}>
-                  {data.user}
+                  BLVCK7
                 </PostTypo>
-                <PostTypo variants="h6">{data.data}</PostTypo>
+                <PostTypo variants="h6">{data.fishingDate}</PostTypo>
                 <PostTypo variants="h6">{data.location}</PostTypo>
               </Stack>
 
@@ -96,7 +98,10 @@ const Post = ({ data, id }) => {
                   <IconButton aria-label="AirOutlinedIcon" color="inherit">
                     <AirOutlinedIcon />
                   </IconButton>
-                  <Typography variants="h6">{data.wind}</Typography>
+                  <Typography variants="h6">
+                    {data.windDirection}
+                    {data.windPower}
+                  </Typography>
                 </Stack>
                 <Stack direction="row" justifyContent="flex-start" alignItems="center" spacing={1}>
                   <IconButton aria-label="CompressOutlinedIcon" color="inherit">
@@ -113,14 +118,16 @@ const Post = ({ data, id }) => {
             <IconButton aria-label="PhishingOutlinedIcon" color="inherit">
               <PhishingOutlinedIcon />
             </IconButton>
-            <Typography variants="h6" sx={{ paddingRight: '5px' }}>
-              {data.fish}
-            </Typography>
+            {data.fish.map((obj, index) => (
+              <Typography key={index} variants="h6" sx={{ paddingRight: '5px' }}>
+                {obj.fishName} на {obj.fishWeight} гр.
+              </Typography>
+            ))}
           </Stack>
 
           {/* Описание рыбалки */}
           <BlueBox>
-            {data.description.length > 150 ? (
+            {/* {data.description.length > 150 ? (
               <>
                 <Typography variants="h6">{data.description}</Typography>
                 <Link
@@ -136,7 +143,8 @@ const Post = ({ data, id }) => {
               </>
             ) : (
               <Typography variants="h6">{data.description}</Typography>
-            )}
+            )} */}
+            <Typography variants="h6">Описание поста</Typography>
           </BlueBox>
         </Stack>
       </Stack>

@@ -1,4 +1,5 @@
-import React, { useState } from 'react';
+import { Stack } from '@mui/material';
+import React from 'react';
 import DatePicker from 'react-datepicker';
 
 import 'react-datepicker/dist/react-datepicker.css';
@@ -16,7 +17,11 @@ const TimePicker = () => {
     dispatch(setFishDate(fishingDate));
   };
 
-  return <DatePicker selected={fishingDate} onChange={(date) => dispatch(setFishDate(date))} />;
+  return (
+    <Stack sx={{ marginBottom: '10px' }}>
+      <DatePicker selected={fishingDate} onChange={(date) => dispatch(setFishDate(date))} />
+    </Stack>
+  );
 };
 
 export default TimePicker;

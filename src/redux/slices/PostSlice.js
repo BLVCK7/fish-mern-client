@@ -1,7 +1,16 @@
-import { createSlice } from '@reduxjs/toolkit';
+import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
+import axios from 'axios';
+
+export const fetchPosts = createAsyncThunk('posts/fetchPosts', async () => {
+  const { data } = await axios.get(`http://localhost:5000/post`);
+  return data;
+});
 
 const initialState = {
-  posts: [],
+  posts: {
+    post: [],
+    status: 'loading',
+  },
   fish: [],
   fishingDate: '',
 };
@@ -18,6 +27,20 @@ export const postSlice = createSlice({
     },
     setFishDate: (state, action) => {
       state.fishingDate = action.payload;
+    },
+  },
+  extraReducers: {
+    // Получение статей
+    [fetchPosts.pending]: (state) => {
+      state.posts.status = 'loading';
+    },
+    [fetchPosts.fulfilled]: (state, action) => {
+      state.posts.post = action.payload;
+      state.posts.status = 'loaded';
+    },
+    [fetchPosts.rejected]: (state) => {
+      state.posts.post = [];
+      state.posts.status = 'error';
     },
   },
 });

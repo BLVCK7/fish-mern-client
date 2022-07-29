@@ -2,15 +2,36 @@ import { Badge, Stack, ToggleButton } from '@mui/material';
 import React from 'react';
 import BtnSlider from './BtnSlider';
 
+import photo1 from '../../assets/img/DSC00002.jpg';
+import photo4 from '../../assets/img/DSC00004.jpg';
+import photo3 from '../../assets/img/DSC09989.jpg';
+
 import FiberManualRecordOutlinedIcon from '@mui/icons-material/FiberManualRecordOutlined';
 import FiberManualRecordIcon from '@mui/icons-material/FiberManualRecord';
 import FavoriteBorderOutlinedIcon from '@mui/icons-material/FavoriteBorderOutlined';
 import FavoriteOutlinedIcon from '@mui/icons-material/FavoriteOutlined';
 
-const Slider = ({ data }) => {
+const Slider = () => {
   const [slideIndex, setSlideIndex] = React.useState(1);
   const [likeActive, setLikeActive] = React.useState(false);
   const [badgeCount, setBadgeCount] = React.useState(0);
+
+  const data = {
+    photo: [
+      {
+        link: photo1,
+        likes: 1,
+      },
+      {
+        link: photo4,
+        likes: 1,
+      },
+      {
+        link: photo3,
+        likes: 1,
+      },
+    ],
+  };
 
   const nextSlide = () => {
     if (slideIndex !== data.photo.length) {

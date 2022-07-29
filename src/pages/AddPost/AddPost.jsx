@@ -21,6 +21,7 @@ import AddOutlinedIcon from '@mui/icons-material/AddOutlined';
 
 import { useDispatch, useSelector } from 'react-redux';
 import { setPost, setFish } from '../../redux/slices/PostSlice';
+import axios from 'axios';
 
 const AddPost = () => {
   const { fish, fishingDate } = useSelector((state) => state.postReducer);
@@ -52,9 +53,35 @@ const AddPost = () => {
     fishingDate,
   };
 
-  const onSumbitPost = () => {
-    dispatch(setPost(fields));
+  const onSumbitPost = async () => {
+    await axios.post(`http://localhost:5000/post`, fields);
   };
+
+  // const onSubmit = async (e) => {
+  //   try {
+  //     setLoading(true);
+
+  //     const fields = {
+  //       title,
+  //       imageUrl,
+  //       tags,
+  //       text,
+  //     };
+
+  //     const { data } = isEditing
+  //       ? await axios.patch(`${process.env.REACT_APP_API_URL}/posts/${id}`, fields)
+  //       : await axios.post(`${process.env.REACT_APP_API_URL}/posts`, fields);
+  //     //   await axios.patch(`http://localhost:4444/posts/${id}`, fields)
+  //     // : await axios.post(`http://localhost:4444/posts`, fields);
+
+  //     const _id = isEditing ? id : data._id;
+
+  //     navigate(`/posts/${_id}`);
+  //   } catch (error) {
+  //     console.warn(error);
+  //     alert('Ошибка при создании статьи');
+  //   }
+  // };
 
   const optionsMDE = React.useMemo(
     () => ({
@@ -108,9 +135,6 @@ const AddPost = () => {
       </Stack>
 
       <Stack direction="column" justifyContent="flex-start">
-        <Typography variant="h6" color="#000">
-          Название поста
-        </Typography>
         <TextField
           onChange={(e) => setPostName(e.target.value)}
           label="Название поста"
@@ -123,9 +147,7 @@ const AddPost = () => {
           Дата рыбалки
         </Typography>
         <TimePicker />
-        <Typography variant="h6" color="#000">
-          Локация
-        </Typography>
+
         <TextField
           onChange={(e) => setLocation(e.target.value)}
           label="Локация"
@@ -149,9 +171,7 @@ const AddPost = () => {
             valueLabelDisplay="auto"
           />
         </Box>
-        <Typography variant="h6" color="#000">
-          Ветер и его направление
-        </Typography>
+
         <Stack direction="row">
           <FormControl sx={{ m: 1, width: '180px' }}>
             <InputLabel htmlFor="grouped-native-select">Направление ветра</InputLabel>
