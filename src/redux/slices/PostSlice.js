@@ -25,6 +25,9 @@ export const postSlice = createSlice({
     setFish: (state, action) => {
       state.fish = [...state.fish, action.payload];
     },
+    deleteFish: (state, action) => {
+      state.fish = state.fish.filter((obj) => obj.id !== action.payload);
+    },
     setFishDate: (state, action) => {
       state.fishingDate = action.payload;
     },
@@ -46,6 +49,6 @@ export const postSlice = createSlice({
 });
 
 // Action creators are generated for each case reducer function
-export const { setPost, setFishDate, setFish } = postSlice.actions;
+export const { setPost, setFishDate, setFish, deleteFish } = postSlice.actions;
 
 export default postSlice.reducer;

@@ -3,6 +3,8 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { Box, Card, IconButton, Stack, styled, Typography } from '@mui/material';
 
+import moment from 'moment';
+
 import WbSunnyOutlinedIcon from '@mui/icons-material/WbSunnyOutlined';
 import AirOutlinedIcon from '@mui/icons-material/AirOutlined';
 import CompressOutlinedIcon from '@mui/icons-material/CompressOutlined';
@@ -24,8 +26,6 @@ const Post = ({ data, id }) => {
   const PostTypo = styled(Typography)({
     margin: '10px 15px 0 0',
   });
-
-  console.log(data);
 
   return (
     <Card>
@@ -78,7 +78,7 @@ const Post = ({ data, id }) => {
                 <PostTypo variants="h6" sx={{ fontWeight: '500' }}>
                   BLVCK7
                 </PostTypo>
-                <PostTypo variants="h6">{data.fishingDate}</PostTypo>
+                <PostTypo variants="h6">{data.fishingDate.substr(0, 10)}</PostTypo>
                 <PostTypo variants="h6">{data.location}</PostTypo>
               </Stack>
 
@@ -92,22 +92,21 @@ const Post = ({ data, id }) => {
                   <IconButton aria-label="WbSunnyOutlinedIcon" color="inherit">
                     <WbSunnyOutlinedIcon />
                   </IconButton>
-                  <Typography variants="h6">{data.temperature}</Typography>
+                  <Typography variants="h6">{data.temperature} °C</Typography>
                 </Stack>
                 <Stack direction="row" justifyContent="flex-start" alignItems="center" spacing={1}>
                   <IconButton aria-label="AirOutlinedIcon" color="inherit">
                     <AirOutlinedIcon />
                   </IconButton>
                   <Typography variants="h6">
-                    {data.windDirection}
-                    {data.windPower}
+                    {data.windPower} {data.windDirection}
                   </Typography>
                 </Stack>
                 <Stack direction="row" justifyContent="flex-start" alignItems="center" spacing={1}>
                   <IconButton aria-label="CompressOutlinedIcon" color="inherit">
                     <CompressOutlinedIcon />
                   </IconButton>
-                  <Typography variants="h6">{data.pressure}</Typography>
+                  <Typography variants="h6">{data.pressure} мм</Typography>
                 </Stack>
               </Stack>
             </Stack>

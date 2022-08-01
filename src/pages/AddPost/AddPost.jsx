@@ -16,12 +16,13 @@ import {
   ToggleButton,
   Typography,
 } from '@mui/material';
-import TimePicker from '../../components/DatePicker/DatePicker';
 import AddOutlinedIcon from '@mui/icons-material/AddOutlined';
 
 import { useDispatch, useSelector } from 'react-redux';
 import { setPost, setFish } from '../../redux/slices/PostSlice';
 import axios from 'axios';
+import Fish from '../../components/Fish/Fish';
+import CalendarComponent from '../../components/CalendarComponent/CalendarComponent';
 
 const AddPost = () => {
   const { fish, fishingDate } = useSelector((state) => state.postReducer);
@@ -38,8 +39,11 @@ const AddPost = () => {
   const [fishName, setFishName] = React.useState('Судак');
   const [fishWeight, setFishWeight] = React.useState(100);
 
+  const [id, setId] = React.useState(1);
+
   const onAddFish = () => {
-    dispatch(setFish({ fishName, fishWeight }));
+    dispatch(setFish({ id, fishName, fishWeight }));
+    setId(id + 1);
   };
 
   const fields = {
@@ -56,32 +60,6 @@ const AddPost = () => {
   const onSumbitPost = async () => {
     await axios.post(`http://localhost:5000/post`, fields);
   };
-
-  // const onSubmit = async (e) => {
-  //   try {
-  //     setLoading(true);
-
-  //     const fields = {
-  //       title,
-  //       imageUrl,
-  //       tags,
-  //       text,
-  //     };
-
-  //     const { data } = isEditing
-  //       ? await axios.patch(`${process.env.REACT_APP_API_URL}/posts/${id}`, fields)
-  //       : await axios.post(`${process.env.REACT_APP_API_URL}/posts`, fields);
-  //     //   await axios.patch(`http://localhost:4444/posts/${id}`, fields)
-  //     // : await axios.post(`http://localhost:4444/posts`, fields);
-
-  //     const _id = isEditing ? id : data._id;
-
-  //     navigate(`/posts/${_id}`);
-  //   } catch (error) {
-  //     console.warn(error);
-  //     alert('Ошибка при создании статьи');
-  //   }
-  // };
 
   const optionsMDE = React.useMemo(
     () => ({
@@ -144,9 +122,10 @@ const AddPost = () => {
           sx={{ width: '50%' }}
         />
         <Typography variant="h6" color="#000">
-          Дата рыбалки
+          Дата рыбалки {fishingDate ? `- ${fishingDate}` : ''}
         </Typography>
-        <TimePicker />
+
+        <CalendarComponent />
 
         <TextField
           onChange={(e) => setLocation(e.target.value)}
@@ -263,9 +242,7 @@ const AddPost = () => {
         {/* <SimpleMDE className="editor" value={textMDE} onChange={onChangeMDE} options={optionsMDE} /> */}
       </Stack>
       {fish.map((obj, index) => (
-        <p key={index}>
-          {obj.fishName} на {obj.fishWeight} гр.
-        </p>
+        <Fish obj={obj} id={obj.id} key={obj.id} />
       ))}
       <Stack direction="row" justifyContent="center" alignItems="center">
         <Button variant="contained" color="primary" onClick={onSumbitPost}>
