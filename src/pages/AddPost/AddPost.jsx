@@ -12,11 +12,14 @@ import {
   Select,
   Slider,
   Stack,
+  styled,
   TextField,
   ToggleButton,
   Typography,
 } from '@mui/material';
 import AddOutlinedIcon from '@mui/icons-material/AddOutlined';
+
+import { useNavigate } from 'react-router-dom';
 
 import { useDispatch, useSelector } from 'react-redux';
 import { setPost, setFish } from '../../redux/slices/PostSlice';
@@ -27,6 +30,7 @@ import CalendarComponent from '../../components/CalendarComponent/CalendarCompon
 const AddPost = () => {
   const { fish, fishingDate } = useSelector((state) => state.postReducer);
   const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   const [textMDE, setTextMDE] = React.useState('');
 
@@ -58,13 +62,14 @@ const AddPost = () => {
   };
 
   const onSumbitPost = async () => {
-    await axios.post(`http://localhost:5000/post`, fields);
+    const { data } = await axios.post(`http://localhost:5000/post`, fields);
+    navigate(`/post/${data._id}`);
   };
 
   const optionsMDE = React.useMemo(
     () => ({
       spellChecker: false,
-      maxHeight: '250px',
+      maxHeight: '100px',
       autofocus: true,
       placeholder: 'Введите текст...',
       status: false,
@@ -101,6 +106,18 @@ const AddPost = () => {
       label: '40°C',
     },
   ];
+
+  const BlueBox = styled(Box)({
+    display: 'flex',
+    justifyContent: 'flex-start',
+    alignItems: 'flex-start',
+    backgroundColor: '#002A5B',
+    color: '#fff',
+    borderRadius: '10px',
+    padding: '10px',
+    width: 'auto',
+    marginBottom: '10px',
+  });
 
   return (
     <Stack
@@ -238,12 +255,29 @@ const AddPost = () => {
             <AddOutlinedIcon />
           </ToggleButton>
         </Stack>
+        {fish.map((obj, index) => (
+          <BlueBox>
+            <Fish obj={obj} id={obj.id} key={obj.id} />
+          </BlueBox>
+        ))}
 
-        {/* <SimpleMDE className="editor" value={textMDE} onChange={onChangeMDE} options={optionsMDE} /> */}
+        <Typography variant="h6" color="#000">
+          Расскажите о рыбалке
+        </Typography>
+        <Stack
+          direction="row"
+          justifyContent="flex-start"
+          alignItems="center"
+          sx={{ margin: '0 auto', width: '90%' }}>
+          <SimpleMDE
+            className="editor"
+            value={textMDE}
+            onChange={onChangeMDE}
+            options={optionsMDE}
+          />
+        </Stack>
       </Stack>
-      {fish.map((obj, index) => (
-        <Fish obj={obj} id={obj.id} key={obj.id} />
-      ))}
+
       <Stack direction="row" justifyContent="center" alignItems="center">
         <Button variant="contained" color="primary" onClick={onSumbitPost}>
           Опубликовать пост

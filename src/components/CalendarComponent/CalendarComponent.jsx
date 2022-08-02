@@ -1,7 +1,7 @@
 import moment from 'moment';
 import React, { useState } from 'react';
 import Calendar from 'react-calendar';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { setFishDate } from '../../redux/slices/PostSlice';
 
 import 'react-calendar/dist/Calendar.css';
