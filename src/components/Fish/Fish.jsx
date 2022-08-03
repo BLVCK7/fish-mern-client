@@ -1,4 +1,4 @@
-import { Stack } from '@mui/material';
+import { Stack, Typography } from '@mui/material';
 import React from 'react';
 import ClearOutlinedIcon from '@mui/icons-material/ClearOutlined';
 import { useDispatch } from 'react-redux';
@@ -12,16 +12,15 @@ const Fish = ({ obj, id }) => {
   };
 
   return (
-    <Stack direction="row" justifyContent="flex-start" alignItems="center" id={id} key={id}>
-      <p>
+    <>
+      <Typography>
         {obj.fishName} на {obj.fishWeight} гр.
-      </p>
-
+      </Typography>
       <ClearOutlinedIcon
         onClick={onDeleteFish}
-        sx={{ opacity: '.2', cursor: 'pointer', marginLeft: '10px', ':hover': { opacity: '1' } }}
+        sx={{ opacity: '.2', cursor: 'pointer', ':hover': { opacity: '1' } }}
       />
-    </Stack>
+    </>
   );
 };
 

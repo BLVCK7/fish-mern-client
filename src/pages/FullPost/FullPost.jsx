@@ -1,21 +1,20 @@
 import React from 'react';
+import axios from 'axios';
 import './FullPost.scss';
 
-import { Card, Slider, Stack, styled, Typography, Box, IconButton } from '@mui/material';
-import { Link, useParams } from 'react-router-dom';
-import { useDispatch, useSelector } from 'react-redux';
+import { Card, Stack, styled, Typography, Box, IconButton } from '@mui/material';
+import { useParams } from 'react-router-dom';
 
 import WbSunnyOutlinedIcon from '@mui/icons-material/WbSunnyOutlined';
 import AirOutlinedIcon from '@mui/icons-material/AirOutlined';
 import CompressOutlinedIcon from '@mui/icons-material/CompressOutlined';
 import PhishingOutlinedIcon from '@mui/icons-material/PhishingOutlined';
-import axios from 'axios';
+
 import CommentBlock from '../../components/CommentBlock/CommentBlock';
+import Slider from '../../components/Slider/Slider';
 
 const FullPost = () => {
-  const dispatch = useDispatch();
   const { id } = useParams();
-  const { posts } = useSelector((state) => state.postReducer);
 
   const [data, setData] = React.useState();
   const [isLoading, setLoading] = React.useState(true);
@@ -164,11 +163,7 @@ const FullPost = () => {
                 </BlueBox>
 
                 {/* Пойманные рыбы */}
-                <Stack
-                  direction="row"
-                  justifyContent="flex-start"
-                  alignItems="center"
-                  spacing={0.5}>
+                <Stack direction="row" justifyContent="center" alignItems="center" spacing={0.5}>
                   <IconButton aria-label="PhishingOutlinedIcon" color="inherit">
                     <PhishingOutlinedIcon />
                   </IconButton>
@@ -178,28 +173,23 @@ const FullPost = () => {
                     </Typography>
                   ))}
                 </Stack>
+              </Stack>
 
-                {/* Описание рыбалки */}
-                <BlueBox>
-                  {/* {data.description.length > 150 ? (
-            <>
-              <Typography variants="h6">{data.description}</Typography>
-              <Link
-                to={`/post/${id}`}
-                style={{
-                  textDecoration: 'none',
-                  color: 'white',
-                  display: 'flex',
-                  justifyContent: 'flex-end',
+              {/* Описание рыбалки */}
+              <Stack
+                direction="row"
+                justifyContent="center"
+                alignItems="center"
+                sx={{
+                  width: { mobile: '100%', laptop: '50%' },
+                  margin: '0 auto',
+                  textAlign: 'center',
+                  backgroundColor: '#002A5B',
+                  color: '#fff',
+                  borderRadius: '10px',
+                  padding: '10px',
                 }}>
-                <ActiveLink variants="h6">Читать далее...</ActiveLink>
-              </Link>
-            </>
-          ) : (
-            <Typography variants="h6">{data.description}</Typography>
-          )} */}
-                  <Typography variants="h6">Описание поста</Typography>
-                </BlueBox>
+                <Typography variants="h6">{data.description}</Typography>
               </Stack>
             </Stack>
           </Card>
@@ -212,7 +202,7 @@ const FullPost = () => {
               alignItems={{ mobile: 'center', laptop: 'flex-start' }}
               spacing={3}
               p={3}>
-              <Typography variant="h5" sx={{ color: '#002A5B' }}>
+              <Typography variant="h5" sx={{ color: '#002A5B', margin: '0 auto' }}>
                 Комментарии:
               </Typography>
 
@@ -224,8 +214,9 @@ const FullPost = () => {
                 spacing={1}
                 textAlign="flex-start"
                 width="100%">
-                {commentData.map((obj) => (
+                {commentData.map((obj, index) => (
                   <BlueBox
+                    key={index}
                     sx={{
                       display: 'flex',
                       flexDirection: 'column',

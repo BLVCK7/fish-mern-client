@@ -37,8 +37,6 @@ const DragAndDrop = () => {
       setDrag(false);
       setImageToggler(false);
       setMediaAdd(true);
-
-      console.log(data);
     } catch (error) {
       console.log(`Ошибка при загрузке файлов: ${error}`);
     }

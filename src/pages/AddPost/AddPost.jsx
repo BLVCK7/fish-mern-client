@@ -91,8 +91,6 @@ const AddPost = () => {
     setTextMDE(value);
   }, []);
 
-  console.log(description);
-
   const marks = [
     {
       value: 730,
@@ -265,9 +263,21 @@ const AddPost = () => {
         </Stack>
 
         {fish.map((obj) => (
-          <BlueBox key={obj.id}>
+          <Stack
+            direction="row"
+            justifyContent="space-between"
+            alignItems="center"
+            key={obj.id}
+            sx={{
+              backgroundColor: '#002A5B',
+              color: '#fff',
+              borderRadius: '10px',
+              padding: '10px',
+              marginBottom: '10px',
+              width: '250px',
+            }}>
             <Fish obj={obj} id={obj.id} />
-          </BlueBox>
+          </Stack>
         ))}
 
         <Stack>

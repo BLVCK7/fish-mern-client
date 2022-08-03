@@ -2,7 +2,6 @@ import { Stack, Typography } from '@mui/material';
 import React from 'react';
 
 const CommentBlock = ({ data }) => {
-  console.log(data);
   return (
     <Stack sx={{ mb: '10px' }}>
       <Stack

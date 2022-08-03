@@ -11,8 +11,6 @@ const Slider = ({ data }) => {
   const [likeActive, setLikeActive] = React.useState(false);
   const [badgeCount, setBadgeCount] = React.useState(0);
 
-  console.log(data);
-
   const nextSlide = () => {
     if (slideIndex !== data.postMedia.length) {
       setSlideIndex(slideIndex + 1);
