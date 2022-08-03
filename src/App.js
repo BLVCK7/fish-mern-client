@@ -1,5 +1,6 @@
 import { Container } from '@mui/material';
 import { Routes, Route } from 'react-router-dom';
+import DragAndDrop from './components/DragAndDrop/DragAndDrop';
 import Navbar from './components/Navbar/Navbar';
 import Slider from './components/Slider/Slider';
 import AddPost from './pages/AddPost/AddPost';
@@ -19,6 +20,7 @@ function App() {
         <Route path="/register" element={<Register />} />
         <Route path="/login" element={<Login />} />
         <Route path="/slider" element={<Slider />} />
+        <Route path="/test" element={<DragAndDrop />} />
       </Routes>
     </Container>
   );

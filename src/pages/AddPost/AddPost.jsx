@@ -2,6 +2,7 @@ import React from 'react';
 import SimpleMDE from 'react-simplemde-editor';
 import 'easymde/dist/easymde.min.css';
 import './AddPost.scss';
+import Fish from '../../components/Fish/Fish';
 import {
   Box,
   Button,
@@ -22,17 +23,19 @@ import AddOutlinedIcon from '@mui/icons-material/AddOutlined';
 import { useNavigate } from 'react-router-dom';
 
 import { useDispatch, useSelector } from 'react-redux';
-import { setPost, setFish } from '../../redux/slices/PostSlice';
+
 import axios from 'axios';
-import Fish from '../../components/Fish/Fish';
 import CalendarComponent from '../../components/CalendarComponent/CalendarComponent';
+import DragAndDrop from '../../components/DragAndDrop/DragAndDrop';
+import { setFish } from '../../redux/slices/PostSlice';
 
 const AddPost = () => {
-  const { fish, fishingDate } = useSelector((state) => state.postReducer);
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  const [textMDE, setTextMDE] = React.useState('');
+  const { fishingDate, fish, postMedia } = useSelector((state) => state.postReducer);
+
+  const [description, setTextMDE] = React.useState('');
 
   const [name, setPostName] = React.useState('');
   const [location, setLocation] = React.useState('');
@@ -40,6 +43,7 @@ const AddPost = () => {
   const [windDirection, setWindDirection] = React.useState('Северный');
   const [windPower, setWindPower] = React.useState('Штиль');
   const [pressure, setPressure] = React.useState(745);
+
   const [fishName, setFishName] = React.useState('Судак');
   const [fishWeight, setFishWeight] = React.useState(100);
 
@@ -59,6 +63,8 @@ const AddPost = () => {
     pressure,
     fish,
     fishingDate,
+    postMedia,
+    description,
   };
 
   const onSumbitPost = async () => {
@@ -73,10 +79,10 @@ const AddPost = () => {
       autofocus: true,
       placeholder: 'Введите текст...',
       status: false,
-      autosave: {
-        enabled: true,
-        delay: 1000,
-      },
+      // autosave: {
+      //   enabled: true,
+      //   delay: 1000,
+      // },
     }),
     [],
   );
@@ -84,6 +90,8 @@ const AddPost = () => {
   const onChangeMDE = React.useCallback((value) => {
     setTextMDE(value);
   }, []);
+
+  console.log(description);
 
   const marks = [
     {
@@ -255,11 +263,16 @@ const AddPost = () => {
             <AddOutlinedIcon />
           </ToggleButton>
         </Stack>
-        {fish.map((obj, index) => (
-          <BlueBox>
-            <Fish obj={obj} id={obj.id} key={obj.id} />
+
+        {fish.map((obj) => (
+          <BlueBox key={obj.id}>
+            <Fish obj={obj} id={obj.id} />
           </BlueBox>
         ))}
+
+        <Stack>
+          <DragAndDrop />
+        </Stack>
 
         <Typography variant="h6" color="#000">
           Расскажите о рыбалке
@@ -271,7 +284,7 @@ const AddPost = () => {
           sx={{ margin: '0 auto', width: '90%' }}>
           <SimpleMDE
             className="editor"
-            value={textMDE}
+            value={description}
             onChange={onChangeMDE}
             options={optionsMDE}
           />

@@ -1,42 +1,22 @@
 import { Badge, Stack, ToggleButton } from '@mui/material';
 import React from 'react';
 import BtnSlider from './BtnSlider';
-
-import photo1 from '../../assets/img/DSC00002.jpg';
-import photo4 from '../../assets/img/DSC00004.jpg';
-import photo3 from '../../assets/img/DSC09989.jpg';
-
 import FiberManualRecordOutlinedIcon from '@mui/icons-material/FiberManualRecordOutlined';
 import FiberManualRecordIcon from '@mui/icons-material/FiberManualRecord';
 import FavoriteBorderOutlinedIcon from '@mui/icons-material/FavoriteBorderOutlined';
 import FavoriteOutlinedIcon from '@mui/icons-material/FavoriteOutlined';
 
-const Slider = () => {
+const Slider = ({ data }) => {
   const [slideIndex, setSlideIndex] = React.useState(1);
   const [likeActive, setLikeActive] = React.useState(false);
   const [badgeCount, setBadgeCount] = React.useState(0);
 
-  const data = {
-    photo: [
-      {
-        link: photo1,
-        likes: 1,
-      },
-      {
-        link: photo4,
-        likes: 1,
-      },
-      {
-        link: photo3,
-        likes: 1,
-      },
-    ],
-  };
+  console.log(data);
 
   const nextSlide = () => {
-    if (slideIndex !== data.photo.length) {
+    if (slideIndex !== data.postMedia.length) {
       setSlideIndex(slideIndex + 1);
-    } else if (slideIndex === data.photo.length) {
+    } else if (slideIndex === data.postMedia.length) {
       setSlideIndex(1);
     }
   };
@@ -45,7 +25,7 @@ const Slider = () => {
     if (slideIndex !== 1) {
       setSlideIndex(slideIndex - 1);
     } else if (slideIndex === 1) {
-      setSlideIndex(data.photo.length);
+      setSlideIndex(data.postMedia.length);
     }
   };
 
@@ -67,12 +47,18 @@ const Slider = () => {
     <Stack direction="column" justifyContent="center" alignItems="center">
       <Stack direction="row" justifyContent="center" alignItems="center">
         <BtnSlider moveSlide={prevSlide} direction={'prev'} />
-        {data.photo.map((obj, index) => (
+        {data.postMedia.map((obj, index) => (
           <img
             key={index}
             style={
               slideIndex === index + 1
-                ? { opacity: 1, margin: '15px', borderRadius: '10px' }
+                ? {
+                    opacity: 1,
+                    margin: '15px',
+                    borderRadius: '10px',
+                    width: '350px',
+                    height: '500px',
+                  }
                 : {
                     position: 'absolute',
                     opacity: 0,
@@ -80,9 +66,11 @@ const Slider = () => {
                     transitionDuration: '0.2s',
                     transitionTimingFunction: 'ease-in-out',
                     borderRadius: '10px',
+                    width: '350px',
+                    height: '500px',
                   }
             }
-            src={`http://localhost:3000${obj.link}`}
+            src={`http://localhost:5000${obj}`}
             alt={index}
           />
         ))}
@@ -105,7 +93,7 @@ const Slider = () => {
       </Badge>
 
       <Stack direction="row" justifyContent="center" alignItems="center">
-        {Array.from({ length: `${data.photo.length}` }).map((item, index) => (
+        {Array.from({ length: `${data.postMedia.length}` }).map((item, index) => (
           <ToggleButton
             key={index}
             value="check"

@@ -35,8 +35,10 @@ const Post = ({ data, id }) => {
         alignItems={{ mobile: 'center', laptop: 'center' }}
         spacing={3}
         p={3}>
-        {/* Фотки поста */}
-        <Slider data={data} />
+        <Stack>
+          {/* Фотки поста */}
+          <Slider data={data} />
+        </Stack>
 
         {/* Название поста */}
         <Stack
@@ -44,8 +46,7 @@ const Post = ({ data, id }) => {
           justifyContent="center"
           alignItems="stretch"
           spacing={1}
-          textAlign="flex-start"
-          width="100%">
+          textAlign="flex-start">
           <BlueBox>
             <Link
               to={`/post/${id}`}
@@ -126,24 +127,27 @@ const Post = ({ data, id }) => {
 
           {/* Описание рыбалки */}
           <BlueBox>
-            {/* {data.description.length > 150 ? (
+            {data.description.length > 150 ? (
               <>
                 <Typography variants="h6">{data.description}</Typography>
-                <Link
-                  to={`/post/${id}`}
-                  style={{
-                    textDecoration: 'none',
-                    color: 'white',
-                    display: 'flex',
-                    justifyContent: 'flex-end',
-                  }}>
-                  <ActiveLink variants="h6">Читать далее...</ActiveLink>
-                </Link>
+                <Stack direction="row" justifyContent="flex-end" alignItems="center">
+                  <ActiveLink variants="h6" sx={{ width: '130px' }}>
+                    <Link
+                      to={`/post/${id}`}
+                      style={{
+                        textDecoration: 'none',
+                        color: 'white',
+                        display: 'flex',
+                        justifyContent: 'flex-end',
+                      }}>
+                      Читать далее...
+                    </Link>
+                  </ActiveLink>
+                </Stack>
               </>
             ) : (
               <Typography variants="h6">{data.description}</Typography>
-            )} */}
-            <Typography variants="h6">Описание поста</Typography>
+            )}
           </BlueBox>
         </Stack>
       </Stack>
