@@ -125,9 +125,9 @@ const Post = ({ data, id }) => {
 
           {/* Описание рыбалки */}
           <BlueBox>
-            {data.description.length > 150 ? (
+            {data.description.length > 200 ? (
               <>
-                <Typography variants="h6">{data.description}</Typography>
+                <Typography variants="h6">{data.description.slice(0, 200) + '...'}</Typography>
                 <Stack direction="row" justifyContent="flex-end" alignItems="center">
                   <ActiveLink variants="h6" sx={{ width: '130px' }}>
                     <Link

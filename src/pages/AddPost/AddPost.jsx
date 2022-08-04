@@ -1,6 +1,5 @@
 import React from 'react';
-import SimpleMDE from 'react-simplemde-editor';
-import 'easymde/dist/easymde.min.css';
+
 import './AddPost.scss';
 import Fish from '../../components/Fish/Fish';
 import {
@@ -13,7 +12,6 @@ import {
   Select,
   Slider,
   Stack,
-  styled,
   TextField,
   ToggleButton,
   Typography,
@@ -35,7 +33,7 @@ const AddPost = () => {
 
   const { fishingDate, fish, postMedia } = useSelector((state) => state.postReducer);
 
-  const [description, setTextMDE] = React.useState('');
+  const [description, setDescription] = React.useState('');
 
   const [name, setPostName] = React.useState('');
   const [location, setLocation] = React.useState('');
@@ -72,25 +70,6 @@ const AddPost = () => {
     navigate(`/post/${data._id}`);
   };
 
-  const optionsMDE = React.useMemo(
-    () => ({
-      spellChecker: false,
-      maxHeight: '100px',
-      autofocus: true,
-      placeholder: 'Введите текст...',
-      status: false,
-      // autosave: {
-      //   enabled: true,
-      //   delay: 1000,
-      // },
-    }),
-    [],
-  );
-
-  const onChangeMDE = React.useCallback((value) => {
-    setTextMDE(value);
-  }, []);
-
   const marks = [
     {
       value: 730,
@@ -113,22 +92,10 @@ const AddPost = () => {
     },
   ];
 
-  const BlueBox = styled(Box)({
-    display: 'flex',
-    justifyContent: 'flex-start',
-    alignItems: 'flex-start',
-    backgroundColor: '#002A5B',
-    color: '#fff',
-    borderRadius: '10px',
-    padding: '10px',
-    width: 'auto',
-    marginBottom: '10px',
-  });
-
   return (
     <Stack
       direction="column"
-      sx={{ backgroundColor: '#fff', padding: '15px', borderRadius: '10px', mb: '20px' }}>
+      sx={{ backgroundColor: '#fff', padding: '15px', borderRadius: '4px', mb: '20px' }}>
       <Stack direction="row" justifyContent="center" alignItems="center">
         <Typography variant="h5" color="#000">
           Добавить новый отчёт о рыбалке
@@ -284,20 +251,38 @@ const AddPost = () => {
           <DragAndDrop />
         </Stack>
 
+        {/* Описание рыбалки */}
         <Typography variant="h6" color="#000">
           Расскажите о рыбалке
         </Typography>
-        <Stack
-          direction="row"
-          justifyContent="flex-start"
-          alignItems="center"
-          sx={{ margin: '0 auto', width: '90%' }}>
-          <SimpleMDE
-            className="editor"
-            value={description}
-            onChange={onChangeMDE}
-            options={optionsMDE}
-          />
+        <Stack direction="row" justifyContent="flex-start" alignItems="center">
+          <Stack
+            direction="row"
+            justifyContent="flex-start"
+            alignItems="center"
+            sx={{
+              width: '400px',
+              height: '100px',
+              margin: '10px 0 15px 0',
+            }}>
+            <textarea
+              value={description}
+              onChange={(e) => setDescription(e.target.value)}
+              required
+              minLength="25"
+              maxLength="500"
+              style={{
+                overflow: 'auto',
+                fontFamily: 'Montserrat',
+                resize: 'none',
+                width: '100%',
+                height: '100%',
+                borderColor: 'rgba(0, 0, 0, .2)',
+                borderRadius: '5px',
+                padding: '5px',
+                outline: 'none',
+              }}></textarea>
+          </Stack>
         </Stack>
       </Stack>
 

@@ -1,5 +1,6 @@
 import { Container } from '@mui/material';
-import { Routes, Route } from 'react-router-dom';
+import { useLayoutEffect } from 'react';
+import { Routes, Route, useLocation } from 'react-router-dom';
 import DragAndDrop from './components/DragAndDrop/DragAndDrop';
 import Navbar from './components/Navbar/Navbar';
 import Slider from './components/Slider/Slider';
@@ -10,18 +11,28 @@ import Login from './pages/Login/Login';
 import Register from './pages/Register/Register';
 
 function App() {
+  const Wrapper = ({ children }) => {
+    const location = useLocation();
+    useLayoutEffect(() => {
+      document.documentElement.scrollTo(0, 0);
+    }, [location.pathname]);
+    return children;
+  };
+
   return (
     <Container maxWidth="desktop">
-      <Navbar />
-      <Routes>
-        <Route path="/" element={<Home />} />
-        <Route path="/add-post" element={<AddPost />} />
-        <Route path="/post/:id" element={<FullPost />} />
-        <Route path="/register" element={<Register />} />
-        <Route path="/login" element={<Login />} />
-        <Route path="/slider" element={<Slider />} />
-        <Route path="/test" element={<DragAndDrop />} />
-      </Routes>
+      <Wrapper>
+        <Navbar />
+        <Routes>
+          <Route path="/" element={<Home />} />
+          <Route path="/add-post" element={<AddPost />} />
+          <Route path="/post/:id" element={<FullPost />} />
+          <Route path="/register" element={<Register />} />
+          <Route path="/login" element={<Login />} />
+          <Route path="/slider" element={<Slider />} />
+          <Route path="/test" element={<DragAndDrop />} />
+        </Routes>
+      </Wrapper>
     </Container>
   );
 }
