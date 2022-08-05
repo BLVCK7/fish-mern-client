@@ -7,72 +7,64 @@ import Grid from '@mui/material/Grid';
 import Box from '@mui/material/Box';
 import Container from '@mui/material/Container';
 import { Link } from 'react-router-dom';
-
-import './Login.scss';
+import { Stack } from '@mui/material';
 
 export default function Login() {
-  const handleSubmit = (event) => {
-    event.preventDefault();
-    const data = new FormData(event.currentTarget);
-    console.log({
-      login: data.get('login'),
-      password: data.get('password'),
-    });
-  };
+  const [username, setUsername] = React.useState('');
+  const [password, setPassword] = React.useState('');
 
   return (
-    <div className="login-box">
-      <Container component="main" maxWidth="xs">
-        <Box
-          sx={{
-            marginTop: 8,
-            display: 'flex',
-            flexDirection: 'column',
-            alignItems: 'center',
-          }}>
-          <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1 }}>
-            <TextField
-              margin="normal"
-              required
-              fullWidth
-              id="login"
-              label="Логин"
-              name="login"
-              autoComplete="off"
-              autoFocus
-            />
-            <TextField
-              margin="normal"
-              required
-              fullWidth
-              name="password"
-              label="Пароль"
-              type="password"
-              id="password"
-              autoComplete="off"
-            />
-            <FormControlLabel
-              control={<Checkbox value="remember" color="primary" />}
-              label="Запомнить меня"
-            />
-            <Button type="submit" fullWidth variant="contained" sx={{ mt: 3, mb: 2 }}>
-              Войти
-            </Button>
-            <Grid container>
-              <Grid item xs>
-                <Link to="#" variant="body2">
-                  Забыли пароль?
-                </Link>
-              </Grid>
-              <Grid item>
-                <Link to="/register" variant="body2">
-                  {'У вас нет аккаунта? Зарегистрироваться!'}
-                </Link>
-              </Grid>
-            </Grid>
-          </Box>
-        </Box>
-      </Container>
-    </div>
+    <Stack
+      direction="column"
+      justifyContent="center"
+      alignItems="center"
+      margin="0 auto"
+      sx={{ backgroundColor: '#fff', width: '50%' }}>
+      <Box
+        sx={{
+          my: '50px',
+          display: 'flex',
+          flexDirection: 'column',
+          alignItems: 'center',
+        }}>
+        <TextField
+          margin="normal"
+          required
+          fullWidth
+          id="login"
+          label="Логин"
+          name="login"
+          autoComplete="off"
+          autoFocus
+        />
+        <TextField
+          margin="normal"
+          required
+          fullWidth
+          name="password"
+          label="Пароль"
+          type="password"
+          id="password"
+          autoComplete="off"
+        />
+        <FormControlLabel
+          control={<Checkbox value="remember" color="primary" />}
+          label="Запомнить меня"
+        />
+        <Button type="submit" fullWidth variant="contained" sx={{ mt: 3, mb: 2 }}>
+          Войти
+        </Button>
+
+        <Stack direction="column" justifyContent="center" alignItems="center">
+          <Link to="#" variant="body2">
+            Забыли пароль?
+          </Link>
+
+          <Link to="/register" variant="body2">
+            {'У вас нет аккаунта? Зарегистрироваться!'}
+          </Link>
+        </Stack>
+      </Box>
+    </Stack>
   );
 }
