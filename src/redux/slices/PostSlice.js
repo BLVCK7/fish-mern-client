@@ -3,13 +3,14 @@ import axios from 'axios';
 
 export const fetchPosts = createAsyncThunk('posts/fetchPosts', async () => {
   const { data } = await axios.get(`http://localhost:5000/post`);
+
   return data;
 });
 
 const initialState = {
   posts: {
     post: [],
-    status: 'loading',
+    status: '',
   },
   fish: [],
   fishingDate: '',

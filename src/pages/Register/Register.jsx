@@ -4,27 +4,23 @@ import TextField from '@mui/material/TextField';
 import Grid from '@mui/material/Grid';
 import Box from '@mui/material/Box';
 
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, Navigate } from 'react-router-dom';
 import { Stack } from '@mui/material';
-import axios from 'axios';
+import { useDispatch, useSelector } from 'react-redux';
+import { registration } from '../../redux/slices/AuthSlice';
 
 export default function Register() {
-  const navigate = useNavigate();
+  const dispatch = useDispatch();
+
+  const { isAuth } = useSelector((state) => state.auth);
 
   const [username, setUsername] = React.useState('');
   const [email, setEmail] = React.useState('');
   const [password, setPassword] = React.useState('');
 
-  const fields = {
-    username,
-    email,
-    password,
-  };
-
-  const onSubmitReg = async () => {
-    await axios.post(`http://localhost:5000/api/registration`, fields);
-    navigate('/login');
-  };
+  if (isAuth) {
+    return <Navigate to="/" />;
+  }
 
   return (
     <Stack
@@ -40,29 +36,38 @@ export default function Register() {
           flexDirection: 'column',
           alignItems: 'center',
         }}>
-        <Stack direction="column" spacing={2} sx={{ my: '10px' }}>
+        <Stack
+          direction="column"
+          justifyContent="center"
+          alignItems="center"
+          sx={{ width: '160%' }}>
           <TextField
-            autoComplete="off"
-            name="username"
+            margin="normal"
             required
             fullWidth
-            id="username"
-            label="Имя пользователя"
+            id="login"
+            label="Логин"
+            name="login"
+            autoComplete="off"
             autoFocus
+            value={username}
             onChange={(e) => setUsername(e.target.value)}
           />
 
           <TextField
+            margin="normal"
             required
             fullWidth
             id="email"
             label="Электронная почта"
             name="email"
             autoComplete="off"
+            value={email}
             onChange={(e) => setEmail(e.target.value)}
           />
 
           <TextField
+            margin="normal"
             required
             fullWidth
             name="password"
@@ -70,26 +75,31 @@ export default function Register() {
             type="password"
             id="password"
             autoComplete="off"
+            value={password}
             onChange={(e) => setPassword(e.target.value)}
           />
+
+          <Button
+            type="submit"
+            fullWidth
+            variant="contained"
+            sx={{ mt: 3, mb: 2 }}
+            onClick={() =>
+              dispatch(
+                registration({
+                  username,
+                  email,
+                  password,
+                }),
+              )
+            }>
+            Зарегистрироваться
+          </Button>
+
+          <Link to="/login" variant="body2">
+            Уже есть аккаунт? Войти
+          </Link>
         </Stack>
-
-        <Button
-          type="submit"
-          fullWidth
-          variant="contained"
-          sx={{ mt: 3, mb: 2 }}
-          onClick={onSubmitReg}>
-          Зарегистрироваться
-        </Button>
-
-        <Grid container justifyContent="flex-end">
-          <Grid item>
-            <Link to="/login" variant="body2">
-              Уже есть аккаунт? Войти
-            </Link>
-          </Grid>
-        </Grid>
       </Box>
     </Stack>
   );

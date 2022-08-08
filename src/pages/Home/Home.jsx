@@ -1,5 +1,5 @@
 import React from 'react';
-import { Stack } from '@mui/material';
+import { Stack, Typography } from '@mui/material';
 import Post from '../../components/Post/Post';
 import { useDispatch, useSelector } from 'react-redux';
 
@@ -7,20 +7,21 @@ import { fetchPosts } from '../../redux/slices/PostSlice';
 
 const Home = () => {
   const dispatch = useDispatch();
-  const { post } = useSelector((state) => state.postReducer.posts);
+  const { post, status } = useSelector((state) => state.postReducer.posts);
 
-  const isPostsLoading = post.status === 'loading';
+  const [isLoading, setIsLoading] = React.useState('loading');
 
   React.useEffect(() => {
+    setIsLoading(status);
     dispatch(fetchPosts());
-  }, [dispatch]);
+  }, []);
 
   return (
     <Stack direction="column" justifyContent="flex-start" alignItems="stretch" spacing={3} mb={2}>
-      {isPostsLoading ? (
-        <div>
-          <h1>Loading...</h1>
-        </div>
+      {isLoading === 'loading' ? (
+        <Stack direction="row" justifyContent="center" alignItems="center" color="white">
+          <Typography>Loading...</Typography>
+        </Stack>
       ) : (
         post.map((post) => <Post key={post._id} data={post} id={post._id} />)
       )}
