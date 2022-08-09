@@ -1,5 +1,5 @@
 import React from 'react';
-import { Container } from '@mui/material';
+import { Container, Stack } from '@mui/material';
 import { useLayoutEffect } from 'react';
 import { Routes, Route, useLocation } from 'react-router-dom';
 import DragAndDrop from './components/DragAndDrop/DragAndDrop';
@@ -36,16 +36,18 @@ function App() {
     <Container maxWidth="desktop">
       <Wrapper>
         <Navbar />
-        <Routes>
-          <Route path="/" element={<Home />} />
-          <Route path="/add-post" element={<AddPost />} />
-          <Route path="/post/:id" element={<FullPost />} />
-          <Route path="/register" element={<Register />} />
-          <Route path="/login" element={<Login />} />
-          <Route path="/slider" element={<Slider />} />
-          <Route path="/profile" element={<Profile />} />
-          <Route path="/test" element={<DragAndDrop />} />
-        </Routes>
+        <Stack sx={{ mt: '100px' }}>
+          <Routes>
+            <Route path="/" element={<Home />} />
+            <Route path="/add-post" element={<AddPost />} />
+            <Route path="/post/:id" element={<FullPost />} />
+            <Route path="/register" element={<Register />} />
+            <Route path="/login" element={<Login />} />
+            <Route path="/slider" element={<Slider />} />
+            <Route path="/profile" element={<Profile />} />
+            <Route path="/test" element={<DragAndDrop />} />
+          </Routes>
+        </Stack>
       </Wrapper>
     </Container>
   );

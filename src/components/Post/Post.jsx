@@ -73,6 +73,7 @@ const Post = ({ data, id }) => {
                 direction={{ mobile: 'column', laptop: 'row' }}
                 justifyContent={{ mobile: 'center', laptop: 'space-between' }}
                 alignItems={{ mobile: 'center', laptop: 'flex-start' }}
+                textAlign={'center'}
                 spacing={0}>
                 <PostTypo variants="h6" sx={{ fontWeight: '500' }}>
                   BLVCK7

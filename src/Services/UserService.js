@@ -1,7 +1,9 @@
-import $api from '../http';
+import $api from '../axios';
 
 export default class UserService {
   static fetchUsers() {
     return $api.get('/users');
   }
 }
+
+
