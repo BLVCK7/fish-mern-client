@@ -19,12 +19,17 @@ import { useNavigate } from 'react-router-dom';
 import { logout } from '../../redux/slices/AuthSlice';
 
 import { GiLuckyFisherman } from 'react-icons/gi';
+import { textAlign } from '@mui/system';
 
 const Navbar = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  const { isAuth } = useSelector((state) => state.auth);
+  const { isAuth, status } = useSelector((state) => state.auth);
+
+  const user = useSelector((state) => state?.auth?.user?.user);
+
+  const isLoading = status === 'loading';
 
   // Проверка isMobile
   const [width, setWidth] = React.useState(window.innerWidth);
@@ -168,14 +173,29 @@ const Navbar = () => {
               }}
               open={Boolean(anchorElUser)}
               onClose={() => setAnchorElUser(null)}>
+              {status === 'loaded' && (
+                <Typography
+                  textAlign="center"
+                  sx={{ fontWeight: '700', cursor: 'default', py: '5px' }}>
+                  {user.username}
+                </Typography>
+              )}
+
               {settings.map((setting) => (
-                <MenuItem key={setting.name} onClick={setting.function}>
-                  <Typography textAlign="center">{setting.name}</Typography>
+                <MenuItem
+                  sx={{
+                    display: 'flex',
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                  }}
+                  key={setting.name}
+                  onClick={setting.function}>
+                  <Typography>{setting.name}</Typography>
                 </MenuItem>
               ))}
             </Menu>
           </Stack>
-        ) : isMobile ? (
+        ) : isMobile && status !== 'loaded' ? (
           <Box sx={{ py: '10.25px' }}>
             <IconButton
               size="large"
@@ -203,9 +223,53 @@ const Navbar = () => {
               sx={{
                 display: { xs: 'block', md: 'none' },
               }}>
+              {status === 'loaded' && (
+                <Typography
+                  textAlign="center"
+                  sx={{ fontWeight: '700', cursor: 'default', py: '5px' }}>
+                  {user.username}
+                </Typography>
+              )}
               {pagesOnLogout.map((page) => (
                 <MenuItem key={page.name} onClick={page.function}>
                   <Typography textAlign="center">{page.name}</Typography>
+                </MenuItem>
+              ))}
+            </Menu>
+          </Box>
+        ) : isMobile && status === 'loaded' && isAuth === false ? (
+          <Box sx={{ py: '22.5px' }}>
+            <IconButton
+              size="large"
+              aria-label="account of current user"
+              aria-controls="menu-appbar"
+              aria-haspopup="true"
+              onClick={(event) => setAnchorElNav(event.currentTarget)}
+              color="inherit">
+              <MenuIcon />
+            </IconButton>
+            <Menu
+              id="menu-appbar"
+              anchorEl={anchorElNav}
+              anchorOrigin={{
+                vertical: 'bottom',
+                horizontal: 'left',
+              }}
+              keepMounted
+              transformOrigin={{
+                vertical: 'top',
+                horizontal: 'left',
+              }}
+              open={Boolean(anchorElNav)}
+              onClose={() => setAnchorElNav(null)}
+              sx={{
+                display: { xs: 'block', md: 'none' },
+              }}>
+              {settingsOnLogout.map((page) => (
+                <MenuItem key={page.name} onClick={page.function}>
+                  <Typography textAlign="center" onClick={() => setAnchorElNav(null)}>
+                    {page.name}
+                  </Typography>
                 </MenuItem>
               ))}
             </Menu>

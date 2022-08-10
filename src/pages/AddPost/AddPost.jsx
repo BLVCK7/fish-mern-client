@@ -25,7 +25,6 @@ import axios from 'axios';
 import CalendarComponent from '../../components/CalendarComponent/CalendarComponent';
 import DragAndDrop from '../../components/DragAndDrop/DragAndDrop';
 import { setFish } from '../../redux/slices/PostSlice';
-import { getUsers } from '../../redux/slices/AuthSlice';
 
 const AddPost = () => {
   const dispatch = useDispatch();
@@ -71,7 +70,6 @@ const AddPost = () => {
   const onSumbitPost = async () => {
     const { data } = await axios.post(`http://localhost:5000/post`, fields);
     navigate(`/post/${data._id}`);
-    console.log(data);
   };
 
   const marks = [

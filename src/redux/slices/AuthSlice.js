@@ -71,7 +71,7 @@ const initialState = {
   isAuth: localStorage.getItem('token') ? true : false,
   user: {},
   status: '',
-  isLoading: false,
+  isLoading: true,
   users: [],
 };
 
