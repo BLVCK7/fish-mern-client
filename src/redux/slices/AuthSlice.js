@@ -42,21 +42,26 @@ export const logout = createAsyncThunk('auth/logout', async () => {
   }
 });
 
-export const checkAuth = createAsyncThunk('auth/checkAuth', async () => {
+export const checkAuth = createAsyncThunk('auth/checkAuth', async (_, thunkAPI) => {
+  thunkAPI.dispatch(setIsLoading(true));
   try {
     const { data } = await axios.get(`${API_URL}/refresh`, { withCredentials: true });
 
     localStorage.setItem('token', data.accessToken);
+
     return data;
   } catch (error) {
     alert(error.response?.data?.message);
+  } finally {
+    thunkAPI.dispatch(setIsLoading(false));
   }
 });
 
 const initialState = {
-  isAuth: false,
+  isAuth: localStorage.getItem('token') ? true : false,
   user: {},
   status: '',
+  isLoading: false,
 };
 
 export const authSlice = createSlice({
@@ -65,6 +70,9 @@ export const authSlice = createSlice({
   reducers: {
     setAuth: (state, action) => {
       state.isAuth = action.payload;
+    },
+    setIsLoading: (state, action) => {
+      state.isLoading = action.payload;
     },
   },
   extraReducers: {
@@ -124,6 +132,6 @@ export const authSlice = createSlice({
   },
 });
 
-export const { setAuth } = authSlice.actions;
+export const { setAuth, setIsLoading } = authSlice.actions;
 
 export default authSlice.reducer;

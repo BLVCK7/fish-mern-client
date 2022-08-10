@@ -1,8 +1,8 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import axios from 'axios';
 
-export const fetchPosts = createAsyncThunk('posts/fetchPosts', async () => {
-  const { data } = await axios.get(`http://localhost:5000/post`);
+export const fetchPosts = createAsyncThunk('posts/fetchPosts', async (user) => {
+  const { data } = await axios.get(`http://localhost:5000/post`, user);
 
   return data;
 });
@@ -25,7 +25,7 @@ export const postSlice = createSlice({
       state.fish = [...state.fish, action.payload];
     },
     deleteFish: (state, action) => {
-      state.fish = state.fish.filter((obj) => obj.id !== action.payload);
+      state.fish = state.fish.filter((obj) => obj.fishId !== action.payload);
     },
     setFishDate: (state, action) => {
       state.fishingDate = action.payload;

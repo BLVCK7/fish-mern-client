@@ -6,6 +6,8 @@ import FiberManualRecordIcon from '@mui/icons-material/FiberManualRecord';
 import FavoriteBorderOutlinedIcon from '@mui/icons-material/FavoriteBorderOutlined';
 import FavoriteOutlinedIcon from '@mui/icons-material/FavoriteOutlined';
 
+import nophoto from '../../assets/img/no-photo.png';
+
 const Slider = ({ data }) => {
   const [slideIndex, setSlideIndex] = React.useState(1);
   const [likeActive, setLikeActive] = React.useState(false);
@@ -45,37 +47,65 @@ const Slider = ({ data }) => {
     <Stack direction="column" justifyContent="center" alignItems="center">
       <Stack direction="row" justifyContent="center" alignItems="center">
         <BtnSlider moveSlide={prevSlide} direction={'prev'} />
-        {data.postMedia.map((obj, index) => (
-          <img
-            key={index}
-            style={
-              slideIndex === index + 1
-                ? {
-                    opacity: 1,
-                    margin: '15px',
-                    borderRadius: '10px',
-                    width: '350px',
-                    height: '500px',
-                  }
-                : {
-                    position: 'absolute',
-                    opacity: 0,
-                    transitionProperty: 'opacity',
-                    transitionDuration: '0.2s',
-                    transitionTimingFunction: 'ease-in-out',
-                    borderRadius: '10px',
-                    width: '350px',
-                    height: '500px',
-                  }
-            }
-            src={`http://localhost:5000${obj}`}
-            alt={index}
-          />
-        ))}
+        {data.postMedia.map((obj, index) =>
+          obj === '' ? (
+            <img
+              key={index}
+              style={
+                slideIndex === index + 1
+                  ? {
+                      opacity: 1,
+                      margin: '15px',
+                      borderRadius: '10px',
+                      width: '335px',
+                      height: '275px',
+                    }
+                  : {
+                      position: 'absolute',
+                      opacity: 0,
+                      transitionProperty: 'opacity',
+                      transitionDuration: '0.2s',
+                      transitionTimingFunction: 'ease-in-out',
+                      borderRadius: '10px',
+                      width: '330px',
+                      height: '275px',
+                    }
+              }
+              src={nophoto}
+              alt={index}
+            />
+          ) : (
+            <img
+              key={index}
+              style={
+                slideIndex === index + 1
+                  ? {
+                      opacity: 1,
+                      margin: '15px',
+                      borderRadius: '10px',
+                      width: '350px',
+                      height: '500px',
+                    }
+                  : {
+                      position: 'absolute',
+                      opacity: 0,
+                      transitionProperty: 'opacity',
+                      transitionDuration: '0.2s',
+                      transitionTimingFunction: 'ease-in-out',
+                      borderRadius: '10px',
+                      width: '350px',
+                      height: '500px',
+                    }
+              }
+              src={`http://localhost:5000${obj}`}
+              alt={index}
+            />
+          ),
+        )}
         <BtnSlider moveSlide={nextSlide} direction={'next'} />
       </Stack>
 
-      <Badge
+      {/* <Badge
         color="primary"
         badgeContent={badgeCount}
         sx={{ position: 'relative', left: '165px', bottom: '45px' }}>
@@ -88,7 +118,7 @@ const Slider = ({ data }) => {
             sx={{ cursor: 'pointer' }}
           />
         )}
-      </Badge>
+      </Badge> */}
 
       <Stack direction="row" justifyContent="center" alignItems="center">
         {Array.from({ length: `${data.postMedia.length}` }).map((item, index) => (

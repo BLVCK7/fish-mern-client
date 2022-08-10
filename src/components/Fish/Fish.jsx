@@ -4,11 +4,11 @@ import ClearOutlinedIcon from '@mui/icons-material/ClearOutlined';
 import { useDispatch } from 'react-redux';
 import { deleteFish } from '../../redux/slices/PostSlice';
 
-const Fish = ({ obj, id }) => {
+const Fish = ({ obj }) => {
   const dispatch = useDispatch();
 
   const onDeleteFish = () => {
-    dispatch(deleteFish(id));
+    dispatch(deleteFish(obj.fishId));
   };
 
   return (

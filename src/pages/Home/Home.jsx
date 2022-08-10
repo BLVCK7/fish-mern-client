@@ -8,19 +8,19 @@ import { fetchPosts } from '../../redux/slices/PostSlice';
 const Home = () => {
   const dispatch = useDispatch();
   const { post, status } = useSelector((state) => state.postReducer.posts);
+  const user = useSelector((state) => state.auth.user?.user);
 
-  const [isLoading, setIsLoading] = React.useState('loading');
+  const isLoading = status === 'loaded' ? false : true;
 
   React.useEffect(() => {
-    setIsLoading(status);
-    dispatch(fetchPosts());
+    dispatch(fetchPosts(user));
   }, []);
 
   return (
     <Stack direction="column" justifyContent="flex-start" alignItems="stretch" spacing={3} mb={2}>
-      {isLoading === 'loading' ? (
+      {isLoading ? (
         <Stack direction="row" justifyContent="center" alignItems="center" color="white">
-          <Typography>Loading...</Typography>
+          <Typography>Загрузка...</Typography>
         </Stack>
       ) : (
         post.map((post) => <Post key={post._id} data={post} id={post._id} />)

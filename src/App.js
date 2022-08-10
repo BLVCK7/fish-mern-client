@@ -10,7 +10,7 @@ import FullPost from './pages/FullPost/FullPost';
 import Home from './pages/Home/Home';
 import Login from './pages/Login/Login';
 import Register from './pages/Register/Register';
-import { checkAuth, setAuth } from './redux/slices/AuthSlice';
+import { checkAuth } from './redux/slices/AuthSlice';
 import { useDispatch } from 'react-redux';
 import Profile from './pages/Profile/Profile';
 
@@ -21,7 +21,6 @@ function App() {
     if (localStorage.getItem('token')) {
       dispatch(checkAuth());
     }
-    dispatch(setAuth(false));
   }, []);
 
   const Wrapper = ({ children }) => {
@@ -33,7 +32,7 @@ function App() {
   };
 
   return (
-    <Container maxWidth="desktop">
+    <Container maxWidth="laptop">
       <Wrapper>
         <Navbar />
         <Stack sx={{ mt: '100px' }}>

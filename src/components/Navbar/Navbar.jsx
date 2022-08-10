@@ -24,6 +24,8 @@ const Navbar = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
+  const { isAuth } = useSelector((state) => state.auth);
+
   // Проверка isMobile
   const [width, setWidth] = React.useState(window.innerWidth);
 
@@ -41,8 +43,6 @@ const Navbar = () => {
   const isMobile = width <= 768;
 
   // ------------------
-
-  const { isAuth } = useSelector((state) => state.auth);
 
   const [anchorElUser, setAnchorElUser] = React.useState(null);
 

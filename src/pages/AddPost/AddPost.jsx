@@ -1,6 +1,5 @@
 import React from 'react';
 
-import './AddPost.scss';
 import Fish from '../../components/Fish/Fish';
 import {
   Box,
@@ -33,6 +32,8 @@ const AddPost = () => {
 
   const { fishingDate, fish, postMedia } = useSelector((state) => state.postReducer);
 
+  const userId = useSelector((state) => state.auth.user?.user?.id);
+
   const [description, setDescription] = React.useState('');
 
   const [name, setPostName] = React.useState('');
@@ -45,14 +46,15 @@ const AddPost = () => {
   const [fishName, setFishName] = React.useState('Судак');
   const [fishWeight, setFishWeight] = React.useState(100);
 
-  const [id, setId] = React.useState(1);
+  const [fishId, setFishId] = React.useState(1);
 
   const onAddFish = () => {
-    dispatch(setFish({ id, fishName, fishWeight }));
-    setId(id + 1);
+    dispatch(setFish({ fishId, fishName, fishWeight }));
+    setFishId(fishId + 1);
   };
 
   const fields = {
+    userId,
     name,
     location,
     temperature,
@@ -68,6 +70,7 @@ const AddPost = () => {
   const onSumbitPost = async () => {
     const { data } = await axios.post(`http://localhost:5000/post`, fields);
     navigate(`/post/${data._id}`);
+    console.log(data);
   };
 
   const marks = [
@@ -234,7 +237,7 @@ const AddPost = () => {
             direction="row"
             justifyContent="space-between"
             alignItems="center"
-            key={obj.id}
+            key={obj.fishId}
             sx={{
               backgroundColor: '#002A5B',
               color: '#fff',
@@ -243,7 +246,7 @@ const AddPost = () => {
               marginBottom: '10px',
               width: '250px',
             }}>
-            <Fish obj={obj} id={obj.id} />
+            <Fish obj={obj} />
           </Stack>
         ))}
 
