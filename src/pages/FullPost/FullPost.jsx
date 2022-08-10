@@ -114,7 +114,7 @@ const FullPost = () => {
                       alignItems={{ mobile: 'center', laptop: 'flex-start' }}
                       spacing={0}>
                       <PostTypo variants="h6" sx={{ fontWeight: '500' }}>
-                        BLVCK7
+                        {data.user.username}
                       </PostTypo>
                       <PostTypo variants="h6">{data.fishingDate.substr(0, 10)}</PostTypo>
                       <PostTypo variants="h6">{data.location}</PostTypo>

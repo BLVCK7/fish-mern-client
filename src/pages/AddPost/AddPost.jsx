@@ -25,14 +25,13 @@ import axios from 'axios';
 import CalendarComponent from '../../components/CalendarComponent/CalendarComponent';
 import DragAndDrop from '../../components/DragAndDrop/DragAndDrop';
 import { setFish } from '../../redux/slices/PostSlice';
+import { getUsers } from '../../redux/slices/AuthSlice';
 
 const AddPost = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
   const { fishingDate, fish, postMedia } = useSelector((state) => state.postReducer);
-
-  const userId = useSelector((state) => state.auth.user?.user?.id);
 
   const [description, setDescription] = React.useState('');
 
@@ -48,13 +47,15 @@ const AddPost = () => {
 
   const [fishId, setFishId] = React.useState(1);
 
+  const user = useSelector((state) => state.auth.user?.user);
+
   const onAddFish = () => {
     dispatch(setFish({ fishId, fishName, fishWeight }));
     setFishId(fishId + 1);
   };
 
   const fields = {
-    userId,
+    user,
     name,
     location,
     temperature,

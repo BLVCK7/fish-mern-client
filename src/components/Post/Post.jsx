@@ -76,7 +76,7 @@ const Post = ({ data, id }) => {
                 textAlign={'center'}
                 spacing={0}>
                 <PostTypo variants="h6" sx={{ fontWeight: '500' }}>
-                  {data.user}
+                  {data.user.username}
                 </PostTypo>
                 <PostTypo variants="h6">{data.fishingDate.substr(0, 10)}</PostTypo>
                 <PostTypo variants="h6">{data.location}</PostTypo>

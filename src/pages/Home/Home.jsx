@@ -8,12 +8,11 @@ import { fetchPosts } from '../../redux/slices/PostSlice';
 const Home = () => {
   const dispatch = useDispatch();
   const { post, status } = useSelector((state) => state.postReducer.posts);
-  const user = useSelector((state) => state.auth.user?.user);
 
   const isLoading = status === 'loaded' ? false : true;
 
   React.useEffect(() => {
-    dispatch(fetchPosts(user));
+    dispatch(fetchPosts());
   }, []);
 
   return (

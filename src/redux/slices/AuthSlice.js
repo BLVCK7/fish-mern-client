@@ -57,11 +57,22 @@ export const checkAuth = createAsyncThunk('auth/checkAuth', async (_, thunkAPI) 
   }
 });
 
+export const getUsers = createAsyncThunk('auth/getUsers', async () => {
+  try {
+    const { data } = await AuthService.fetchUsers();
+
+    return data;
+  } catch (error) {
+    alert(error.response?.data?.message);
+  }
+});
+
 const initialState = {
   isAuth: localStorage.getItem('token') ? true : false,
   user: {},
   status: '',
   isLoading: false,
+  users: [],
 };
 
 export const authSlice = createSlice({
@@ -127,6 +138,18 @@ export const authSlice = createSlice({
     },
     [checkAuth.rejected]: (state) => {
       state.user = null;
+      state.status = 'error';
+    },
+    // Get users
+    [getUsers.pending]: (state) => {
+      state.status = 'loading';
+    },
+    [getUsers.fulfilled]: (state, action) => {
+      state.users = action.payload;
+      state.status = 'loaded';
+    },
+    [getUsers.rejected]: (state) => {
+      state.users = null;
       state.status = 'error';
     },
   },
