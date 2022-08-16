@@ -1,17 +1,20 @@
 import React from 'react';
 
 import { Link } from 'react-router-dom';
-import { Box, Card, IconButton, Stack, styled, ToggleButton, Typography } from '@mui/material';
+import { Box, Card, IconButton, Stack, styled, Typography } from '@mui/material';
 
 import WbSunnyOutlinedIcon from '@mui/icons-material/WbSunnyOutlined';
 import AirOutlinedIcon from '@mui/icons-material/AirOutlined';
 import CompressOutlinedIcon from '@mui/icons-material/CompressOutlined';
 import PhishingOutlinedIcon from '@mui/icons-material/PhishingOutlined';
-import ClearIcon from '@mui/icons-material/Clear';
-import EditIcon from '@mui/icons-material/Edit';
+
 import Slider from '../Slider/Slider';
+import { getOnePost } from '../../redux/slices/PostSlice';
+import { useDispatch } from 'react-redux';
 
 const Post = ({ data, id }) => {
+  const dispatch = useDispatch();
+
   const BlueBox = styled(Box)({
     backgroundColor: '#002A5B',
     color: '#fff',
@@ -26,6 +29,10 @@ const Post = ({ data, id }) => {
   const PostTypo = styled(Typography)({
     margin: '10px 15px 0 0',
   });
+
+  const onClickFullPost = () => {
+    dispatch(getOnePost(id));
+  };
 
   return (
     <Card>
@@ -46,31 +53,14 @@ const Post = ({ data, id }) => {
           alignItems="stretch"
           spacing={1}
           textAlign="flex-start">
-          <Stack direction="row" justifyContent="flex-end" alignItems="center">
-            <ToggleButton
-              size="small"
-              value="check"
-              sx={{
-                borderColor: 'transparent',
-              }}>
-              <EditIcon />
-            </ToggleButton>
-            <ToggleButton
-              size="small"
-              value="check"
-              sx={{
-                borderColor: 'transparent',
-              }}>
-              <ClearIcon />
-            </ToggleButton>
-          </Stack>
           <BlueBox>
             <Link
               to={`/post/${id}`}
               style={{
                 textDecoration: 'none',
                 color: 'white',
-              }}>
+              }}
+              onClick={onClickFullPost}>
               <ActiveLink
                 variant="h4"
                 fontWeight="700"
@@ -157,7 +147,8 @@ const Post = ({ data, id }) => {
                         color: 'white',
                         display: 'flex',
                         justifyContent: 'flex-end',
-                      }}>
+                      }}
+                      onClick={onClickFullPost}>
                       Читать далее...
                     </Link>
                   </ActiveLink>

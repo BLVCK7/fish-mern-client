@@ -21,10 +21,9 @@ import { useNavigate } from 'react-router-dom';
 
 import { useDispatch, useSelector } from 'react-redux';
 
-import axios from 'axios';
 import CalendarComponent from '../../components/CalendarComponent/CalendarComponent';
 import DragAndDrop from '../../components/DragAndDrop/DragAndDrop';
-import { setFish } from '../../redux/slices/PostSlice';
+import { createPost, setFish } from '../../redux/slices/PostSlice';
 
 const AddPost = () => {
   const dispatch = useDispatch();
@@ -53,23 +52,28 @@ const AddPost = () => {
     setFishId(fishId + 1);
   };
 
-  const fields = {
-    user,
-    name,
-    location,
-    temperature,
-    windDirection,
-    windPower,
-    pressure,
-    fish,
-    fishingDate,
-    postMedia,
-    description,
-  };
-
   const onSumbitPost = async () => {
-    const { data } = await axios.post(`http://localhost:5000/post`, fields);
-    navigate(`/post/${data._id}`);
+    const fields = {
+      user,
+      name,
+      location,
+      temperature,
+      windDirection,
+      windPower,
+      pressure,
+      fish,
+      fishingDate,
+      postMedia,
+      description,
+    };
+
+    try {
+      const response = await dispatch(createPost(fields)).unwrap();
+      navigate(`/post/${response._id}`);
+    } catch (error) {
+      alert('Не удалось создать статью');
+      console.log(error);
+    }
   };
 
   const marks = [

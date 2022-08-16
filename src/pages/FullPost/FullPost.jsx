@@ -1,23 +1,32 @@
 import React from 'react';
-import axios from 'axios';
 import './FullPost.scss';
 
-import { Card, Stack, styled, Typography, Box, IconButton } from '@mui/material';
-import { useParams } from 'react-router-dom';
+import { Card, Stack, styled, Typography, Box, IconButton, ToggleButton } from '@mui/material';
+import { useNavigate, useParams } from 'react-router-dom';
 
 import WbSunnyOutlinedIcon from '@mui/icons-material/WbSunnyOutlined';
 import AirOutlinedIcon from '@mui/icons-material/AirOutlined';
 import CompressOutlinedIcon from '@mui/icons-material/CompressOutlined';
 import PhishingOutlinedIcon from '@mui/icons-material/PhishingOutlined';
+import ClearIcon from '@mui/icons-material/Clear';
+import EditIcon from '@mui/icons-material/Edit';
 
 import CommentBlock from '../../components/CommentBlock/CommentBlock';
 import Slider from '../../components/Slider/Slider';
+import { useDispatch, useSelector } from 'react-redux';
+import { getOnePost, removePost } from '../../redux/slices/PostSlice';
 
 const FullPost = () => {
   const { id } = useParams();
 
-  const [data, setData] = React.useState();
-  const [isLoading, setLoading] = React.useState(true);
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+
+  const { status, fullPost } = useSelector((state) => state.postReducer.posts);
+
+  React.useEffect(() => {
+    dispatch(getOnePost(id));
+  }, []);
 
   const commentData = [
     {
@@ -37,18 +46,12 @@ const FullPost = () => {
     },
   ];
 
-  React.useEffect(() => {
-    axios
-      .get(`http://localhost:5000/post/${id}`)
-      .then((res) => {
-        setData(res.data);
-        setLoading(false);
-      })
-      .catch((err) => {
-        console.warn(err);
-        alert('Ошибка при получении статьи');
-      });
-  }, [id]);
+  const onDeletePost = () => {
+    if (window.confirm('Действительно хотите удалить пост?')) {
+      dispatch(removePost(id));
+      navigate(`/`);
+    }
+  };
 
   const BlueBox = styled(Box)({
     backgroundColor: '#002A5B',
@@ -63,7 +66,7 @@ const FullPost = () => {
 
   return (
     <>
-      {isLoading ? (
+      {status !== 'loaded' ? (
         'Загрузка'
       ) : (
         <>
@@ -75,7 +78,7 @@ const FullPost = () => {
               spacing={3}
               p={3}>
               {/* Фотки поста */}
-              <Slider data={data} />
+              <Slider data={fullPost} />
 
               {/* Название поста */}
               <Stack
@@ -85,6 +88,26 @@ const FullPost = () => {
                 spacing={1}
                 textAlign="flex-start"
                 width="100%">
+                {/* Кнопки редактирование / удаление */}
+                <Stack direction="row" justifyContent="flex-end" alignItems="center">
+                  <ToggleButton
+                    size="small"
+                    value="check"
+                    sx={{
+                      borderColor: 'transparent',
+                    }}>
+                    <EditIcon />
+                  </ToggleButton>
+                  <ToggleButton
+                    size="small"
+                    value="check"
+                    sx={{
+                      borderColor: 'transparent',
+                    }}
+                    onClick={onDeletePost}>
+                    <ClearIcon />
+                  </ToggleButton>
+                </Stack>
                 <BlueBox
                   sx={{
                     display: 'flex',
@@ -99,7 +122,7 @@ const FullPost = () => {
                       textAlign: { mobile: 'center', laptop: 'start' },
                       marginBottom: { mobile: '10px', laptop: '0' },
                     }}>
-                    {data.name}
+                    {fullPost.name}
                   </Typography>
 
                   {/* Автор, дата, локация */}
@@ -114,10 +137,10 @@ const FullPost = () => {
                       alignItems={{ mobile: 'center', laptop: 'flex-start' }}
                       spacing={0}>
                       <PostTypo variants="h6" sx={{ fontWeight: '500' }}>
-                        {data.user.username}
+                        {fullPost.user.username}
                       </PostTypo>
-                      <PostTypo variants="h6">{data.fishingDate.substr(0, 10)}</PostTypo>
-                      <PostTypo variants="h6">{data.location}</PostTypo>
+                      <PostTypo variants="h6">{fullPost.fishingDate.substr(0, 10)}</PostTypo>
+                      <PostTypo variants="h6">{fullPost.location}</PostTypo>
                     </Stack>
 
                     {/* Погода */}
@@ -134,7 +157,7 @@ const FullPost = () => {
                         <IconButton aria-label="WbSunnyOutlinedIcon" color="inherit">
                           <WbSunnyOutlinedIcon />
                         </IconButton>
-                        <Typography variants="h6">{data.temperature} °C</Typography>
+                        <Typography variants="h6">{fullPost.temperature} °C</Typography>
                       </Stack>
                       <Stack
                         direction="row"
@@ -145,7 +168,7 @@ const FullPost = () => {
                           <AirOutlinedIcon />
                         </IconButton>
                         <Typography variants="h6">
-                          {data.windPower} {data.windDirection}
+                          {fullPost.windPower} {fullPost.windDirection}
                         </Typography>
                       </Stack>
                       <Stack
@@ -156,7 +179,7 @@ const FullPost = () => {
                         <IconButton aria-label="CompressOutlinedIcon" color="inherit">
                           <CompressOutlinedIcon />
                         </IconButton>
-                        <Typography variants="h6">{data.pressure} мм</Typography>
+                        <Typography variants="h6">{fullPost.pressure} мм</Typography>
                       </Stack>
                     </Stack>
                   </Stack>
@@ -167,7 +190,7 @@ const FullPost = () => {
                   <IconButton aria-label="PhishingOutlinedIcon" color="inherit">
                     <PhishingOutlinedIcon />
                   </IconButton>
-                  {data.fish.map((obj, index) => (
+                  {fullPost.fish.map((obj, index) => (
                     <Typography key={index} variants="h6" sx={{ paddingRight: '5px' }}>
                       {obj.fishName} на {obj.fishWeight} гр.
                     </Typography>
@@ -189,7 +212,7 @@ const FullPost = () => {
                   borderRadius: '10px',
                   padding: '10px',
                 }}>
-                <Typography variants="h6">{data.description}</Typography>
+                <Typography variants="h6">{fullPost.description}</Typography>
               </Stack>
             </Stack>
           </Card>

@@ -2,18 +2,17 @@ import React from 'react';
 import { Stack, Typography } from '@mui/material';
 import Post from '../../components/Post/Post';
 import { useDispatch, useSelector } from 'react-redux';
-
 import { fetchPosts } from '../../redux/slices/PostSlice';
 
 const Home = () => {
   const dispatch = useDispatch();
   const { post, status } = useSelector((state) => state.postReducer.posts);
 
-  const isLoading = status === 'loaded' ? false : true;
-
   React.useEffect(() => {
     dispatch(fetchPosts());
   }, []);
+
+  const isLoading = status === 'loaded' ? false : true;
 
   return (
     <Stack direction="column" justifyContent="flex-start" alignItems="stretch" spacing={3} mb={2}>

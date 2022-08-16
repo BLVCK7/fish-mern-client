@@ -7,9 +7,26 @@ export const fetchPosts = createAsyncThunk('posts/fetchPosts', async () => {
   return data;
 });
 
+export const createPost = createAsyncThunk('posts/createPost', async (fields) => {
+  const { data } = await axios.post(`http://localhost:5000/post`, fields);
+
+  return data;
+});
+
+export const getOnePost = createAsyncThunk('posts/getOnePost', async (id) => {
+  const { data } = await axios.get(`http://localhost:5000/post/${id}`);
+
+  return data;
+});
+
+export const removePost = createAsyncThunk('posts/removePost', async (id) => {
+  await axios.delete(`http://localhost:5000/post/${id}`);
+});
+
 const initialState = {
   posts: {
     post: [],
+    fullPost: {},
     status: '',
   },
   fish: [],
@@ -35,7 +52,7 @@ export const postSlice = createSlice({
     },
   },
   extraReducers: {
-    // Получение статей
+    // Получение постов
     [fetchPosts.pending]: (state) => {
       state.posts.status = 'loading';
     },
@@ -46,6 +63,34 @@ export const postSlice = createSlice({
     [fetchPosts.rejected]: (state) => {
       state.posts.post = [];
       state.posts.status = 'error';
+    },
+    // Добавление поста
+    [createPost.pending]: (state) => {
+      state.posts.status = 'loading';
+    },
+    [createPost.fulfilled]: (state, action) => {
+      state.posts.fullPost = action.payload;
+      state.posts.status = 'loaded';
+    },
+    [createPost.rejected]: (state) => {
+      state.posts.fullPost = {};
+      state.posts.status = 'error';
+    },
+    // Получение поста
+    [getOnePost.pending]: (state) => {
+      state.posts.status = 'loading';
+    },
+    [getOnePost.fulfilled]: (state, action) => {
+      state.posts.fullPost = action.payload;
+      state.posts.status = 'loaded';
+    },
+    [getOnePost.rejected]: (state) => {
+      state.posts.fullPost = [];
+      state.posts.status = 'error';
+    },
+    // Удаление поста
+    [removePost.pending]: (state, action) => {
+      state.posts.post = state.posts.post.filter((obj) => obj._id !== action.meta.arg);
     },
   },
 });
