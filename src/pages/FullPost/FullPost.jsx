@@ -1,5 +1,4 @@
 import React from 'react';
-import './FullPost.scss';
 
 import { Card, Stack, styled, Typography, Box, IconButton, ToggleButton } from '@mui/material';
 import { useNavigate, useParams } from 'react-router-dom';

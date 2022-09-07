@@ -2,7 +2,6 @@ import React from 'react';
 import { Container, Stack } from '@mui/material';
 import { useLayoutEffect } from 'react';
 import { Routes, Route, useLocation } from 'react-router-dom';
-import DragAndDrop from './components/DragAndDrop/DragAndDrop';
 import Navbar from './components/Navbar/Navbar';
 import Slider from './components/Slider/Slider';
 import AddPost from './pages/AddPost/AddPost';
@@ -44,7 +43,7 @@ function App() {
             <Route path="/login" element={<Login />} />
             <Route path="/slider" element={<Slider />} />
             <Route path="/profile" element={<Profile />} />
-            <Route path="/test" element={<DragAndDrop />} />
+            {/* <Route path="/test" element={<AddPostForm />} /> */}
           </Routes>
         </Stack>
       </Wrapper>

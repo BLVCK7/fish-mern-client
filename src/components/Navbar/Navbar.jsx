@@ -14,22 +14,22 @@ import {
 import MenuIcon from '@mui/icons-material/Menu';
 
 import React from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
-import { logout } from '../../redux/slices/AuthSlice';
 
 import { GiLuckyFisherman } from 'react-icons/gi';
-import { textAlign } from '@mui/system';
+import AlertDialog from './alertDialogue';
+import BackdropAlert from '../BackdropAlert';
 
 const Navbar = () => {
-  const dispatch = useDispatch();
   const navigate = useNavigate();
+
+  const [openDialog, setOpenDialog] = React.useState(false); // confirm на выход из аккаунта
+  const [open, setOpen] = React.useState(false); // alert на выход из аккаунта
 
   const { isAuth, status } = useSelector((state) => state.auth);
 
   const user = useSelector((state) => state?.auth?.user?.user);
-
-  const isLoading = status === 'loading';
 
   // Проверка isMobile
   const [width, setWidth] = React.useState(window.innerWidth);
@@ -50,14 +50,6 @@ const Navbar = () => {
   // ------------------
 
   const [anchorElUser, setAnchorElUser] = React.useState(null);
-
-  const onClickLogout = () => {
-    if (window.confirm('Вы действительно хотите выйти?')) {
-      dispatch(logout());
-      navigate('/');
-    }
-  };
-
   const [anchorElNav, setAnchorElNav] = React.useState(null);
 
   const settings = [
@@ -71,7 +63,7 @@ const Navbar = () => {
     {
       function: function () {
         setAnchorElUser(null);
-        onClickLogout();
+        setOpenDialog(true);
       },
       name: 'Выйти',
     },
@@ -112,245 +104,200 @@ const Navbar = () => {
   ];
 
   return (
-    <AppBar position="fixed">
-      <Stack
-        direction="row"
-        justifyContent="space-between"
-        alignItems="center"
-        sx={{ px: { mobile: '10px', laptop: '30px' } }}>
+    <>
+      {openDialog ? (
+        <AlertDialog setOpenDialog={setOpenDialog} openDialog={openDialog} setOpen={setOpen} />
+      ) : undefined}
+
+      <AppBar position="fixed">
         <Stack
           direction="row"
-          justifyContent="center"
+          justifyContent="space-between"
           alignItems="center"
-          onClick={() => navigate('/')}
-          sx={{ ':hover': { cursor: 'pointer' } }}>
-          <GiLuckyFisherman style={{ fontSize: '25px', marginRight: '10px' }} />
-          <Typography
-            variant="h5"
-            noWrap
-            component="a"
-            sx={{
-              mr: 2,
-              display: { xs: 'flex', md: 'none' },
-              fontFamily: 'Montserrat',
-              fontWeight: 700,
-              color: 'inherit',
-              textDecoration: 'none',
-            }}>
-            Рыбка мечты
-          </Typography>
-        </Stack>
-
-        {isAuth ? (
-          <Stack direction="row" justifyContent="flex-end" alignItems="center">
-            <Button
-              onClick={() => navigate('/add-post')}
+          sx={{ px: { mobile: '10px', laptop: '30px' } }}>
+          <Stack
+            direction="row"
+            justifyContent="center"
+            alignItems="center"
+            onClick={() => navigate('/')}
+            sx={{ ':hover': { cursor: 'pointer' } }}>
+            <GiLuckyFisherman style={{ fontSize: '25px', marginRight: '10px' }} />
+            <Typography
+              variant="h5"
+              noWrap
+              component="a"
               sx={{
-                my: 2,
-                color: 'white',
-                mr: '10px',
+                mr: 2,
+                display: { xs: 'flex', md: 'none' },
+                fontFamily: 'Montserrat',
+                fontWeight: 700,
+                color: 'inherit',
+                textDecoration: 'none',
               }}>
-              Добавить пост
-            </Button>
-
-            <Tooltip title="Open settings">
-              <IconButton onClick={(event) => setAnchorElUser(event.currentTarget)} sx={{ p: 0 }}>
-                <Avatar alt="Remy Sharp" src="/static/images/avatar/2.jpg" />
-              </IconButton>
-            </Tooltip>
-            <Menu
-              sx={{ mt: '45px' }}
-              id="menu-appbar"
-              anchorEl={anchorElUser}
-              anchorOrigin={{
-                vertical: 'top',
-                horizontal: 'right',
-              }}
-              keepMounted
-              transformOrigin={{
-                vertical: 'top',
-                horizontal: 'right',
-              }}
-              open={Boolean(anchorElUser)}
-              onClose={() => setAnchorElUser(null)}>
-              {status === 'loaded' && (
-                <Typography
-                  textAlign="center"
-                  sx={{ fontWeight: '700', cursor: 'default', py: '5px' }}>
-                  {user.username}
-                </Typography>
-              )}
-
-              {settings.map((setting) => (
-                <MenuItem
-                  sx={{
-                    display: 'flex',
-                    justifyContent: 'center',
-                    alignItems: 'center',
-                  }}
-                  key={setting.name}
-                  onClick={setting.function}>
-                  <Typography>{setting.name}</Typography>
-                </MenuItem>
-              ))}
-            </Menu>
+              Рыбка мечты
+            </Typography>
           </Stack>
-        ) : isMobile && status !== 'loaded' ? (
-          <Box sx={{ py: '10.25px' }}>
-            <IconButton
-              size="large"
-              aria-label="account of current user"
-              aria-controls="menu-appbar"
-              aria-haspopup="true"
-              onClick={(event) => setAnchorElNav(event.currentTarget)}
-              color="inherit">
-              <MenuIcon />
-            </IconButton>
-            <Menu
-              id="menu-appbar"
-              anchorEl={anchorElNav}
-              anchorOrigin={{
-                vertical: 'bottom',
-                horizontal: 'left',
-              }}
-              keepMounted
-              transformOrigin={{
-                vertical: 'top',
-                horizontal: 'left',
-              }}
-              open={Boolean(anchorElNav)}
-              onClose={() => setAnchorElNav(null)}
-              sx={{
-                display: { xs: 'block', md: 'none' },
-              }}>
-              {status === 'loaded' && (
-                <Typography
-                  textAlign="center"
-                  sx={{ fontWeight: '700', cursor: 'default', py: '5px' }}>
-                  {user.username}
-                </Typography>
-              )}
-              {pagesOnLogout.map((page) => (
-                <MenuItem key={page.name} onClick={page.function}>
-                  <Typography textAlign="center">{page.name}</Typography>
-                </MenuItem>
-              ))}
-            </Menu>
-          </Box>
-        ) : isMobile && status === 'loaded' && isAuth === false ? (
-          <Box sx={{ py: '22.5px' }}>
-            <IconButton
-              size="large"
-              aria-label="account of current user"
-              aria-controls="menu-appbar"
-              aria-haspopup="true"
-              onClick={(event) => setAnchorElNav(event.currentTarget)}
-              color="inherit">
-              <MenuIcon />
-            </IconButton>
-            <Menu
-              id="menu-appbar"
-              anchorEl={anchorElNav}
-              anchorOrigin={{
-                vertical: 'bottom',
-                horizontal: 'left',
-              }}
-              keepMounted
-              transformOrigin={{
-                vertical: 'top',
-                horizontal: 'left',
-              }}
-              open={Boolean(anchorElNav)}
-              onClose={() => setAnchorElNav(null)}
-              sx={{
-                display: { xs: 'block', md: 'none' },
-              }}>
-              {settingsOnLogout.map((page) => (
-                <MenuItem key={page.name} onClick={page.function}>
-                  <Typography textAlign="center" onClick={() => setAnchorElNav(null)}>
-                    {page.name}
-                  </Typography>
-                </MenuItem>
-              ))}
-            </Menu>
-          </Box>
-        ) : (
-          <Stack direction="row" justifyContent="flex-end" alignItems="center">
-            {settingsOnLogout.map((settings) => (
+
+          {open ? (
+            <BackdropAlert
+              toLocation="/"
+              status="success"
+              text="Вы успешно вышли из аккаунта!"
+              open={open}
+              setOpen={setOpen}
+            />
+          ) : isAuth ? (
+            <Stack direction="row" justifyContent="flex-end" alignItems="center">
               <Button
-                key={settings.name}
-                onClick={settings.function}
+                onClick={() => navigate('/add-post')}
                 sx={{
                   my: 2,
                   color: 'white',
                   mr: '10px',
                 }}>
-                {settings.name}
+                Добавить пост
               </Button>
-            ))}
-          </Stack>
-        )}
-      </Stack>
-    </AppBar>
+
+              <Tooltip title="Open settings">
+                <IconButton onClick={(event) => setAnchorElUser(event.currentTarget)} sx={{ p: 0 }}>
+                  <Avatar alt="Remy Sharp" src="/static/images/avatar/2.jpg" />
+                </IconButton>
+              </Tooltip>
+              <Menu
+                sx={{ mt: '45px' }}
+                id="menu-appbar"
+                anchorEl={anchorElUser}
+                anchorOrigin={{
+                  vertical: 'top',
+                  horizontal: 'right',
+                }}
+                keepMounted
+                transformOrigin={{
+                  vertical: 'top',
+                  horizontal: 'right',
+                }}
+                open={Boolean(anchorElUser)}
+                onClose={() => setAnchorElUser(null)}>
+                {status === 'loaded' && (
+                  <Typography
+                    textAlign="center"
+                    sx={{ fontWeight: '700', cursor: 'default', py: '5px' }}>
+                    {user.username}
+                  </Typography>
+                )}
+
+                {settings.map((setting) => (
+                  <MenuItem
+                    sx={{
+                      display: 'flex',
+                      justifyContent: 'center',
+                      alignItems: 'center',
+                    }}
+                    key={setting.name}
+                    onClick={setting.function}>
+                    <Typography>{setting.name}</Typography>
+                  </MenuItem>
+                ))}
+              </Menu>
+            </Stack>
+          ) : isMobile && status !== 'loaded' ? (
+            <Box sx={{ py: '10.25px' }}>
+              <IconButton
+                size="large"
+                aria-label="account of current user"
+                aria-controls="menu-appbar"
+                aria-haspopup="true"
+                onClick={(event) => setAnchorElNav(event.currentTarget)}
+                color="inherit">
+                <MenuIcon />
+              </IconButton>
+              <Menu
+                id="menu-appbar"
+                anchorEl={anchorElNav}
+                anchorOrigin={{
+                  vertical: 'bottom',
+                  horizontal: 'left',
+                }}
+                keepMounted
+                transformOrigin={{
+                  vertical: 'top',
+                  horizontal: 'left',
+                }}
+                open={Boolean(anchorElNav)}
+                onClose={() => setAnchorElNav(null)}
+                sx={{
+                  display: { xs: 'block', md: 'none' },
+                }}>
+                {status === 'loaded' && (
+                  <Typography
+                    textAlign="center"
+                    sx={{ fontWeight: '700', cursor: 'default', py: '5px' }}>
+                    {user.username}
+                  </Typography>
+                )}
+                {pagesOnLogout.map((page) => (
+                  <MenuItem key={page.name} onClick={page.function}>
+                    <Typography textAlign="center">{page.name}</Typography>
+                  </MenuItem>
+                ))}
+              </Menu>
+            </Box>
+          ) : isMobile && status === 'loaded' && isAuth === false ? (
+            <Box sx={{ py: '22.5px' }}>
+              <IconButton
+                size="large"
+                aria-label="account of current user"
+                aria-controls="menu-appbar"
+                aria-haspopup="true"
+                onClick={(event) => setAnchorElNav(event.currentTarget)}
+                color="inherit">
+                <MenuIcon />
+              </IconButton>
+              <Menu
+                id="menu-appbar"
+                anchorEl={anchorElNav}
+                anchorOrigin={{
+                  vertical: 'bottom',
+                  horizontal: 'left',
+                }}
+                keepMounted
+                transformOrigin={{
+                  vertical: 'top',
+                  horizontal: 'left',
+                }}
+                open={Boolean(anchorElNav)}
+                onClose={() => setAnchorElNav(null)}
+                sx={{
+                  display: { xs: 'block', md: 'none' },
+                }}>
+                {settingsOnLogout.map((page) => (
+                  <MenuItem key={page.name} onClick={page.function}>
+                    <Typography textAlign="center" onClick={() => setAnchorElNav(null)}>
+                      {page.name}
+                    </Typography>
+                  </MenuItem>
+                ))}
+              </Menu>
+            </Box>
+          ) : (
+            <Stack direction="row" justifyContent="flex-end" alignItems="center">
+              {settingsOnLogout.map((settings) => (
+                <Button
+                  key={settings.name}
+                  onClick={settings.function}
+                  sx={{
+                    my: 2,
+                    color: 'white',
+                    mr: '10px',
+                  }}>
+                  {settings.name}
+                </Button>
+              ))}
+            </Stack>
+          )}
+        </Stack>
+      </AppBar>
+    </>
   );
 };
 export default Navbar;
-
-// const Navbar = () => {
-//   const dispatch = useDispatch();
-//   const navigate = useNavigate();
-
-//   const { isAuth, user } = useSelector((state) => state.auth);
-
-//   const onClickLogout = () => {
-//     if (window.confirm('Вы действительно хотите выйти?')) {
-//       dispatch(logout());
-//     }
-//   };
-
-//   return (
-//     <Stack
-//       direction="row"
-//       justifyContent="space-between"
-//       alignItems="center"
-//       my="20px"
-//       textAlign="center">
-//       <Link to="/" style={{ color: '#fff', fontSize: '18px', textDecoration: 'none' }}>
-//         Logo
-//       </Link>
-//       {isAuth ? (
-//         <Stack direction="row" justifyContent="center" alignItems="center" spacing={2} mb="10px">
-//           <Link
-//             to="/add-post"
-//             style={{
-//               color: '#fff',
-//               fontSize: '18px',
-//               textDecoration: 'none',
-//             }}>
-//             Add Post
-//           </Link>
-//           <Link to="/profile" style={{ color: '#fff', fontSize: '18px', textDecoration: 'none' }}>
-//             {user.user.username}
-//           </Link>
-//           <Typography
-//             to="/login"
-//             style={{ color: '#fff', fontSize: '18px', textDecoration: 'none', cursor: 'pointer' }}
-//             onClick={onClickLogout}>
-//             Logout
-//           </Typography>
-//         </Stack>
-//       ) : (
-//         <Stack direction="row" justifyContent="center" alignItems="center" spacing={2} mb="10px">
-//           <Link to="/register" style={{ color: '#fff', fontSize: '18px', textDecoration: 'none' }}>
-//             Register
-//           </Link>
-//           <Link to="/login" style={{ color: '#fff', fontSize: '18px', textDecoration: 'none' }}>
-//             Login
-//           </Link>
-//         </Stack>
-//       )}
-//     </Stack>
-//   );
-// };
-
-// export default Navbar;

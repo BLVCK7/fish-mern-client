@@ -1,106 +1,135 @@
 import * as React from 'react';
 import Button from '@mui/material/Button';
 import TextField from '@mui/material/TextField';
-import Box from '@mui/material/Box';
 
-import { Link, Navigate } from 'react-router-dom';
-import { Stack } from '@mui/material';
+import { Link, useNavigate } from 'react-router-dom';
+import { Alert, Backdrop, Paper, Stack } from '@mui/material';
 import { useDispatch, useSelector } from 'react-redux';
 import { registration } from '../../redux/slices/AuthSlice';
+import { Controller, useForm } from 'react-hook-form';
+import CircularProgress from '@mui/material/CircularProgress';
 
 export default function Register() {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
 
-  const { isAuth } = useSelector((state) => state.auth);
+  const [open, setOpen] = React.useState(false);
 
-  const [username, setUsername] = React.useState('');
-  const [email, setEmail] = React.useState('');
-  const [password, setPassword] = React.useState('');
+  const { isAuth, status } = useSelector((state) => state.auth);
+
+  const {
+    control,
+    handleSubmit,
+    reset,
+    // formState: { errors },
+  } = useForm({
+    defaultValues: {
+      username: '',
+      email: '',
+      password: '',
+    },
+  });
+
+  const onSumbitLogin = ({ username, email, password }) => {
+    dispatch(registration({ username, email, password }));
+    reset();
+    setOpen(true);
+  };
 
   if (isAuth) {
-    return <Navigate to="/" />;
+    return (
+      <Backdrop
+        sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }}
+        open={open}
+        onClick={() => navigate('/')}>
+        <Alert severity="success">
+          Вы успешно зарегистрировались! Нажмите, чтобы перейти на главную страницу.
+        </Alert>
+      </Backdrop>
+    );
   }
 
   return (
-    <Stack direction="row" justifyContent="center" alignItems="center">
-      <Stack
-        direction="column"
-        justifyContent="center"
-        alignItems="center"
-        sx={{ backgroundColor: '#fff', width: { mobile: '100%', laptop: '50%' } }}>
-        <Box
+    <>
+      {status === 'loading' ? (
+        <Backdrop sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }} open={open}>
+          <CircularProgress color="inherit" />
+        </Backdrop>
+      ) : (
+        <Paper
+          elevation={3}
           sx={{
-            my: '50px',
-            display: 'flex',
-            flexDirection: 'column',
-            alignItems: 'center',
+            width: { mobile: '100%', tablet: '70%', laptop: '50%' },
+            margin: { tablet: '0 auto' },
+            padding: '2rem',
           }}>
-          <Stack
-            direction="column"
-            justifyContent="center"
-            alignItems="center"
-            sx={{ width: '160%' }}>
-            <TextField
-              margin="normal"
-              required
-              fullWidth
-              id="login"
-              label="Логин"
-              name="login"
-              autoComplete="off"
-              autoFocus
-              value={username}
-              onChange={(e) => setUsername(e.target.value)}
-            />
+          <form onSubmit={handleSubmit(onSumbitLogin)}>
+            <Stack direction="column" alignItems="center" textAlign="center">
+              <Controller
+                name="username"
+                control={control}
+                render={({ field }) => (
+                  <TextField
+                    {...field}
+                    label="Логин"
+                    margin="normal"
+                    required
+                    // fullWidth
+                    autoComplete="off"
+                    autoFocus
+                    sx={{ width: { mobile: '100%', tablet: '70%' } }}
+                  />
+                )}
+              />
 
-            <TextField
-              margin="normal"
-              required
-              fullWidth
-              id="email"
-              label="Электронная почта"
-              name="email"
-              autoComplete="off"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-            />
+              <Controller
+                name="email"
+                control={control}
+                render={({ field }) => (
+                  <TextField
+                    {...field}
+                    label="Электронная почта"
+                    margin="normal"
+                    required
+                    // fullWidth
+                    autoComplete="off"
+                    sx={{ width: { mobile: '100%', tablet: '70%' } }}
+                  />
+                )}
+              />
 
-            <TextField
-              margin="normal"
-              required
-              fullWidth
-              name="password"
-              label="Пароль"
-              type="password"
-              id="password"
-              autoComplete="off"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-            />
+              <Controller
+                name="password"
+                control={control}
+                render={({ field }) => (
+                  <TextField
+                    {...field}
+                    label="Пароль"
+                    type="password"
+                    margin="normal"
+                    required
+                    // fullWidth
+                    autoComplete="off"
+                    sx={{ width: { mobile: '100%', tablet: '70%' } }}
+                  />
+                )}
+              />
 
-            <Button
-              type="submit"
-              fullWidth
-              variant="contained"
-              sx={{ mt: 3, mb: 2 }}
-              onClick={() =>
-                dispatch(
-                  registration({
-                    username,
-                    email,
-                    password,
-                  }),
-                )
-              }>
-              Зарегистрироваться
-            </Button>
+              <Button
+                variant="contained"
+                type="submit"
+                sx={{ margin: { mobile: '10px 0 15px 0' } }}
+                size="large">
+                Зарегистрироваться
+              </Button>
 
-            <Link to="/login" variant="body2">
-              Уже есть аккаунт? Войти
-            </Link>
-          </Stack>
-        </Box>
-      </Stack>
-    </Stack>
+              <Link to="/login" variant="body2" style={{ fontSize: '15px', color: '#002A5B' }}>
+                {'Уже есть аккаунт? Войти'}
+              </Link>
+            </Stack>
+          </form>
+        </Paper>
+      )}
+    </>
   );
 }
